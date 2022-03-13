@@ -10,37 +10,28 @@ import (
 
 const (
 	ballMaxSpeed = 30
+	ballSize     = 15
 )
 
-var ballSizes []int
-
-func init() {
-	ballSizes = []int{10, 15, 20, 25}
-}
-
 type Ball struct {
-	width, height int
-	initX, initY  int
-	dx, dy        float64
-	image         *ebiten.Image
-	rect          *image.Rectangle
-	IsDisplay     bool
+	initX, initY int
+	dx, dy       float64
+	image        *ebiten.Image
+	rect         *image.Rectangle
+	IsDisplay    bool
 }
 
 func CreateBall() *Ball {
-	size := ballSizes[rand.Intn(4)]
-	x, y := gameZoneHorizontalCenter-size/2, gameZoneVerticalCenter-size/2
+	x, y := gameZoneHorizontalCenter-ballSize/2, gameZoneVerticalCenter-ballSize/2
 	dx, dy := randDx(), 0.
-	rect := image.Rect(x, y, x+size, y+size)
+	rect := image.Rect(x, y, x+ballSize, y+ballSize)
 
 	return &Ball{
-		size,
-		size,
 		x,
 		y,
 		dx,
 		dy,
-		ebiten.NewImage(size, size),
+		ebiten.NewImage(ballSize, ballSize),
 		&rect,
 		true,
 	}
@@ -59,10 +50,10 @@ func randDx() float64 {
 
 func (p *Ball) ResetPosition() {
 	p.dx, p.dy = randDx(), 0
-	p.rect.Min.X = int(p.initX)
-	p.rect.Min.Y = int(p.initY)
-	p.rect.Max.X = int(p.initX) + p.width
-	p.rect.Max.Y = int(p.initY) + p.height
+	p.rect.Min.X = p.initX
+	p.rect.Min.Y = p.initY
+	p.rect.Max.X = int(p.initX) + ballSize
+	p.rect.Max.Y = int(p.initY) + ballSize
 }
 
 func (p *Ball) Draw(screen *ebiten.Image) {
