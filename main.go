@@ -50,7 +50,7 @@ func init() {
 }
 
 func addBall() {
-	balls = append(balls, CreateBall(gameZoneHorizontalCenter-ballWidth/2, gameZoneVerticalCenter-ballHeight/2))
+	balls = append(balls, CreateBall())
 }
 
 type Game struct{}

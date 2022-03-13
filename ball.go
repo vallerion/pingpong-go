@@ -8,24 +8,42 @@ import (
 	"math/rand"
 )
 
-type Ball struct {
-	initX, initY, dx, dy float64
-	image                *ebiten.Image
-	rect                 *image.Rectangle
-	IsDisplay            bool
-}
-
 const (
-	ballHeight   = 10
-	ballWidth    = 10
 	ballMaxSpeed = 30
 )
 
-func CreateBall(x, y float64) *Ball {
-	dx, dy := randDx(), 0.
-	rect := image.Rect(int(x), int(y), int(x+ballWidth), int(y+ballHeight))
+var ballSizes []int
 
-	return &Ball{x, y, dx, dy, ebiten.NewImage(ballWidth, ballHeight), &rect, true}
+func init() {
+	ballSizes = []int{10, 15, 20, 25}
+}
+
+type Ball struct {
+	width, height int
+	initX, initY  int
+	dx, dy        float64
+	image         *ebiten.Image
+	rect          *image.Rectangle
+	IsDisplay     bool
+}
+
+func CreateBall() *Ball {
+	size := ballSizes[rand.Intn(4)]
+	x, y := gameZoneHorizontalCenter-size/2, gameZoneVerticalCenter-size/2
+	dx, dy := randDx(), 0.
+	rect := image.Rect(x, y, x+size, y+size)
+
+	return &Ball{
+		size,
+		size,
+		x,
+		y,
+		dx,
+		dy,
+		ebiten.NewImage(size, size),
+		&rect,
+		true,
+	}
 }
 
 func randDx() float64 {
@@ -43,8 +61,8 @@ func (p *Ball) ResetPosition() {
 	p.dx, p.dy = randDx(), 0
 	p.rect.Min.X = int(p.initX)
 	p.rect.Min.Y = int(p.initY)
-	p.rect.Max.X = int(p.initX + ballWidth)
-	p.rect.Max.Y = int(p.initY + ballHeight)
+	p.rect.Max.X = int(p.initX) + p.width
+	p.rect.Max.Y = int(p.initY) + p.height
 }
 
 func (p *Ball) Draw(screen *ebiten.Image) {
