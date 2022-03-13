@@ -12,6 +12,7 @@ type Ball struct {
 	initX, initY, dx, dy float64
 	image                *ebiten.Image
 	rect                 *image.Rectangle
+	IsDisplay            bool
 }
 
 const (
@@ -24,7 +25,7 @@ func CreateBall(x, y float64) *Ball {
 	dx, dy := randDx(), 0.
 	rect := image.Rect(int(x), int(y), int(x+ballWidth), int(y+ballHeight))
 
-	return &Ball{x, y, dx, dy, ebiten.NewImage(ballWidth, ballHeight), &rect}
+	return &Ball{x, y, dx, dy, ebiten.NewImage(ballWidth, ballHeight), &rect, true}
 }
 
 func randDx() float64 {
@@ -47,6 +48,10 @@ func (p *Ball) ResetPosition() {
 }
 
 func (p *Ball) Draw(screen *ebiten.Image) {
+	if p.IsDisplay == false {
+		return
+	}
+
 	if math.Abs(p.dx) < 10 {
 		p.image.Fill(color.White)
 	} else if math.Abs(p.dx) < 20 {
@@ -92,7 +97,7 @@ func (p *Ball) Repel(rect *image.Rectangle) {
 
 	if horizontalCollision {
 		if math.Abs(p.dx) < ballMaxSpeed {
-			p.dx = -(p.dx * 1.3)
+			p.dx = -(p.dx * 1.2)
 		} else {
 			p.dx = -p.dx
 		}
