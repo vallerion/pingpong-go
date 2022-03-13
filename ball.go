@@ -126,7 +126,7 @@ func (p *Ball) Repel(rect *image.Rectangle) {
 }
 
 func randomizeDY() float64 {
-	return float64(1+rand.Intn(1)) / float64(2+rand.Intn(5))
+	return float64(1+rand.Intn(1)) / float64(2+rand.Intn(3))
 }
 
 func normalizeDiffRepel(diff float64) float64 {

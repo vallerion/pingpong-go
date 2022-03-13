@@ -124,6 +124,7 @@ func (g *Game) Update() error {
 		}
 	}
 
+	// remove those that are not showing
 	balls = tempBalls
 
 	return nil
