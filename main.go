@@ -5,6 +5,8 @@ import (
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
 	"github.com/hajimehoshi/ebiten/v2/text"
+	"github.com/vallerion/pingpong-go/consts"
+	"github.com/vallerion/pingpong-go/entities"
 	"golang.org/x/image/font"
 	"golang.org/x/image/font/gofont/goregular"
 	"golang.org/x/image/font/opentype"
@@ -13,32 +15,20 @@ import (
 	"math/rand"
 )
 
-const (
-	screenHeight             = 768
-	screenWidth              = 1366
-	gameFieldGap             = 20
-	gameZoneLeft             = gameFieldGap
-	gameZoneRight            = screenWidth - gameFieldGap
-	gameZoneTop              = gameFieldGap + 50
-	gameZoneBottom           = screenHeight - gameFieldGap
-	gameZoneVerticalCenter   = (gameZoneTop + gameZoneBottom) / 2
-	gameZoneHorizontalCenter = (gameZoneRight + gameZoneLeft) / 2
-)
-
 var (
-	leftPlayer  *Player
-	rightPlayer *Player
-	balls       []*Ball
-	border      *Border
+	leftPlayer  *entities.Player
+	rightPlayer *entities.Player
+	balls       []*entities.Ball
+	border      *entities.Border
 	mainFont    font.Face
 )
 
 func init() {
-	leftPlayer = CreatePlayer(gameZoneLeft+50, gameZoneVerticalCenter-playerHeight/2)
-	rightPlayer = CreatePlayer(gameZoneRight-(50+playerWidth), gameZoneVerticalCenter-playerHeight/2)
-	border = CreateBorder()
+	leftPlayer = entities.CreatePlayer(consts.GameZoneLeft+50, consts.GameZoneVerticalCenter-consts.PlayerHeight/2)
+	rightPlayer = entities.CreatePlayer(consts.GameZoneRight-(50+consts.PlayerWidth), consts.GameZoneVerticalCenter-consts.PlayerHeight/2)
+	border = entities.CreateBorder()
 
-	balls = make([]*Ball, 0)
+	balls = make([]*entities.Ball, 0)
 	addBall()
 
 	fontObj, _ := opentype.Parse(goregular.TTF)
@@ -50,7 +40,7 @@ func init() {
 }
 
 func addBall() {
-	balls = append(balls, CreateBall())
+	balls = append(balls, entities.CreateBall())
 }
 
 type Game struct{}
@@ -75,7 +65,7 @@ func (g *Game) Update() error {
 		rightPlayer.MoveDown()
 	}
 
-	tempBalls := make([]*Ball, 0)
+	tempBalls := make([]*entities.Ball, 0)
 	for _, ball := range balls {
 		if ball.IsDisplay == false {
 			continue
@@ -135,7 +125,7 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	ebitenutil.DebugPrint(screen, msg)
 
 	scoreText := fmt.Sprintf("%d:%d", leftPlayer.Score, rightPlayer.Score)
-	text.Draw(screen, scoreText, mainFont, gameZoneHorizontalCenter-20, 40, color.White)
+	text.Draw(screen, scoreText, mainFont, consts.GameZoneHorizontalCenter-20, 40, color.White)
 
 	border.Draw(screen)
 	leftPlayer.Draw(screen)
@@ -146,11 +136,11 @@ func (g *Game) Draw(screen *ebiten.Image) {
 }
 
 func (g *Game) Layout(outsideWidth, outsideHeight int) (int, int) {
-	return screenWidth, screenHeight
+	return consts.ScreenWidth, consts.ScreenHeight
 }
 
 func main() {
-	ebiten.SetWindowSize(screenWidth, screenHeight)
+	ebiten.SetWindowSize(consts.ScreenWidth, consts.ScreenHeight)
 	ebiten.SetWindowTitle("Hello, World!")
 
 	if err := ebiten.RunGame(&Game{}); err != nil {

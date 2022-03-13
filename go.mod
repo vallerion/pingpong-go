@@ -1,10 +1,11 @@
-module pingpong-multiplayer-go
+module github.com/vallerion/pingpong-go
 
 go 1.17
 
 require (
+	github.com/hajimehoshi/ebiten v1.12.12
 	github.com/hajimehoshi/ebiten/v2 v2.2.5
-	golang.org/x/image v0.0.0-20210628002857-a66eb6448b8d
+	golang.org/x/image v0.0.0-20220302094943-723b81ca9867
 )
 
 require (

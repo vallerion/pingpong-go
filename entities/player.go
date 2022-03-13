@@ -1,14 +1,10 @@
-package main
+package entities
 
 import (
 	"github.com/hajimehoshi/ebiten/v2"
+	"github.com/vallerion/pingpong-go/consts"
 	"image"
 	"image/color"
-)
-
-const (
-	playerWidth  = 16
-	playerHeight = 48
 )
 
 type Player struct {
@@ -18,8 +14,8 @@ type Player struct {
 }
 
 func CreatePlayer(x, y float64) *Player {
-	rect := image.Rect(int(x), int(y), int(x+playerWidth), int(y+playerHeight))
-	return &Player{ebiten.NewImage(playerWidth, playerHeight), &rect, 0}
+	rect := image.Rect(int(x), int(y), int(x+consts.PlayerWidth), int(y+consts.PlayerHeight))
+	return &Player{ebiten.NewImage(consts.PlayerWidth, consts.PlayerHeight), &rect, 0}
 }
 
 func (p *Player) Draw(screen *ebiten.Image) {
@@ -30,7 +26,7 @@ func (p *Player) Draw(screen *ebiten.Image) {
 }
 
 func (p *Player) MoveUp() {
-	if p.rect.Min.Y <= gameZoneTop {
+	if p.rect.Min.Y <= consts.GameZoneTop {
 		return
 	}
 	p.rect.Min.Y -= 5
@@ -38,7 +34,7 @@ func (p *Player) MoveUp() {
 }
 
 func (p *Player) MoveDown() {
-	if p.rect.Max.Y >= gameZoneBottom {
+	if p.rect.Max.Y >= consts.GameZoneBottom {
 		return
 	}
 	p.rect.Min.Y += 5

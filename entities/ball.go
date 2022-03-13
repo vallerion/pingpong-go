@@ -1,16 +1,12 @@
-package main
+package entities
 
 import (
 	"github.com/hajimehoshi/ebiten/v2"
+	"github.com/vallerion/pingpong-go/consts"
 	"image"
 	"image/color"
 	"math"
 	"math/rand"
-)
-
-const (
-	ballMaxSpeed = 30
-	ballSize     = 15
 )
 
 type Ball struct {
@@ -22,16 +18,16 @@ type Ball struct {
 }
 
 func CreateBall() *Ball {
-	x, y := gameZoneHorizontalCenter-ballSize/2, gameZoneVerticalCenter-ballSize/2
+	x, y := consts.GameZoneHorizontalCenter-consts.BallSize/2, consts.GameZoneVerticalCenter-consts.BallSize/2
 	dx, dy := randDx(), 0.
-	rect := image.Rect(x, y, x+ballSize, y+ballSize)
+	rect := image.Rect(x, y, x+consts.BallSize, y+consts.BallSize)
 
 	return &Ball{
 		x,
 		y,
 		dx,
 		dy,
-		ebiten.NewImage(ballSize, ballSize),
+		ebiten.NewImage(consts.BallSize, consts.BallSize),
 		&rect,
 		true,
 	}
@@ -52,8 +48,8 @@ func (p *Ball) ResetPosition() {
 	p.dx, p.dy = randDx(), 0
 	p.rect.Min.X = p.initX
 	p.rect.Min.Y = p.initY
-	p.rect.Max.X = int(p.initX) + ballSize
-	p.rect.Max.Y = int(p.initY) + ballSize
+	p.rect.Max.X = int(p.initX) + consts.BallSize
+	p.rect.Max.Y = int(p.initY) + consts.BallSize
 }
 
 func (p *Ball) Draw(screen *ebiten.Image) {
@@ -74,16 +70,16 @@ func (p *Ball) Draw(screen *ebiten.Image) {
 }
 
 func (p *Ball) Update() {
-	if p.rect.Max.Y >= gameZoneBottom {
+	if p.rect.Max.Y >= consts.GameZoneBottom {
 		p.dy = -p.dy
 	}
-	if p.rect.Min.Y <= gameZoneTop {
+	if p.rect.Min.Y <= consts.GameZoneTop {
 		p.dy = -p.dy
 	}
-	if p.rect.Max.X >= gameZoneRight {
+	if p.rect.Max.X >= consts.GameZoneRight {
 		p.dx = -p.dx
 	}
-	if p.rect.Min.X <= gameZoneLeft {
+	if p.rect.Min.X <= consts.GameZoneLeft {
 		p.dx = -p.dx
 	}
 
@@ -105,7 +101,7 @@ func (p *Ball) Repel(rect *image.Rectangle) {
 	diff := rectCenter - ballCenter
 
 	if horizontalCollision {
-		if math.Abs(p.dx) < ballMaxSpeed {
+		if math.Abs(p.dx) < consts.BallMaxSpeed {
 			p.dx = -(p.dx * 1.2)
 		} else {
 			p.dx = -p.dx
@@ -133,9 +129,9 @@ func normalizeDiffRepel(diff float64) float64 {
 }
 
 func (p *Ball) LeftGoal() bool {
-	return p.rect.Min.X <= gameZoneLeft && p.rect.Min.Y >= gateTop && p.rect.Max.Y <= gateBottom
+	return p.rect.Min.X <= consts.GameZoneLeft && p.rect.Min.Y >= consts.GateTop && p.rect.Max.Y <= consts.GateBottom
 }
 
 func (p *Ball) RightGoal() bool {
-	return p.rect.Max.X >= gameZoneRight && p.rect.Min.Y >= gateTop && p.rect.Max.Y <= gateBottom
+	return p.rect.Max.X >= consts.GameZoneRight && p.rect.Min.Y >= consts.GateTop && p.rect.Max.Y <= consts.GateBottom
 }
