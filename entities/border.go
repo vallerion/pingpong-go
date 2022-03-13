@@ -7,14 +7,12 @@ import (
 )
 
 type Border struct {
-	//image *ebiten.Image
+	borders []*ImageAndOptions
 }
 
 func CreateBorder() *Border {
-	return &Border{}
-}
+	borders := make([]*ImageAndOptions, 0)
 
-func (p *Border) Draw(screen *ebiten.Image) {
 	topBorder := ebiten.NewImage(consts.ScreenWidth, consts.GameFieldGap)
 	topBorder.Fill(color.White)
 	topBorderOpts := &ebiten.DrawImageOptions{}
@@ -45,10 +43,18 @@ func (p *Border) Draw(screen *ebiten.Image) {
 	rightBottomBorderOpts := &ebiten.DrawImageOptions{}
 	rightBottomBorderOpts.GeoM.Translate(float64(consts.ScreenWidth-consts.GameFieldGap), float64(consts.GateBottom))
 
-	screen.DrawImage(topBorder, topBorderOpts)
-	screen.DrawImage(bottomBorder, bottomBorderOpts)
-	screen.DrawImage(leftTopBorder, leftTopBorderOpts)
-	screen.DrawImage(leftBottomBorder, leftBottomBorderOpts)
-	screen.DrawImage(rightTopBorder, rightTopBorderOpts)
-	screen.DrawImage(rightBottomBorder, rightBottomBorderOpts)
+	borders = append(borders, &ImageAndOptions{topBorder, topBorderOpts})
+	borders = append(borders, &ImageAndOptions{bottomBorder, bottomBorderOpts})
+	borders = append(borders, &ImageAndOptions{leftTopBorder, leftTopBorderOpts})
+	borders = append(borders, &ImageAndOptions{leftBottomBorder, leftBottomBorderOpts})
+	borders = append(borders, &ImageAndOptions{rightTopBorder, rightTopBorderOpts})
+	borders = append(borders, &ImageAndOptions{rightBottomBorder, rightBottomBorderOpts})
+
+	return &Border{borders}
+}
+
+func (b *Border) Draw(screen *ebiten.Image) {
+	for _, border := range b.borders {
+		screen.DrawImage(border.Image, border.Options)
+	}
 }

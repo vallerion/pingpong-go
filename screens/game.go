@@ -17,15 +17,17 @@ type GameScreen struct {
 	balls       []*entities.Ball
 	border      *entities.Border
 	font        font.Face
+	pause       bool
 }
 
-func CreateScreen(font font.Face) *GameScreen {
+func CreateGameScreen(font font.Face) *GameScreen {
 	image := &GameScreen{
 		entities.CreatePlayer(consts.GameZoneLeft+50, consts.GameZoneVerticalCenter-consts.PlayerHeight/2),
 		entities.CreatePlayer(consts.GameZoneRight-(50+consts.PlayerWidth), consts.GameZoneVerticalCenter-consts.PlayerHeight/2),
 		make([]*entities.Ball, 0),
 		entities.CreateBorder(),
 		font,
+		false,
 	}
 
 	image.addBall()
@@ -37,12 +39,19 @@ func (s *GameScreen) addBall() {
 }
 
 func (s *GameScreen) Update() error {
+	if s.pause {
+		return nil
+	}
+
 	go func() {
 		if rand.Intn(1000) == 50 {
 			s.addBall()
 		}
 	}()
 
+	if ebiten.IsKeyPressed(ebiten.KeySpace) {
+		s.pause = !s.pause
+	}
 	if ebiten.IsKeyPressed(ebiten.KeyW) {
 		s.leftPlayer.MoveUp()
 	}

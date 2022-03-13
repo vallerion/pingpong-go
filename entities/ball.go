@@ -35,7 +35,7 @@ func CreateBall() *Ball {
 
 func randDx() float64 {
 	direction := rand.Intn(2)
-	dx := 5 + rand.Intn(3)
+	dx := 2 + rand.Intn(3)
 
 	if direction == 1 {
 		return float64(-dx)

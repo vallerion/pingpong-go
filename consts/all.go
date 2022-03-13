@@ -18,4 +18,6 @@ const (
 	SideBorderHeight         = (ScreenHeight-GameZoneTop-GameFieldGap*2)/2 - GateHeight/2
 	GateTop                  = ScreenHeight/2 - GateHeight/2 + GameZoneTop
 	GateBottom               = ScreenHeight/2 + GateHeight/2 + GameZoneTop
+	ButtonPadding            = 20
+	TextSize                 = 32
 )

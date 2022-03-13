@@ -11,29 +11,33 @@ import (
 )
 
 var (
-	gameScreen *screens.GameScreen
+	//gameScreen *screens.GameScreen
+	menuScreen *screens.Menu
 	mainFont   font.Face
 )
 
 func init() {
 	fontObj, _ := opentype.Parse(goregular.TTF)
 	mainFont, _ = opentype.NewFace(fontObj, &opentype.FaceOptions{
-		Size:    32,
+		Size:    consts.TextSize,
 		DPI:     72,
 		Hinting: font.HintingNone,
 	})
 
-	gameScreen = screens.CreateScreen(mainFont)
+	//gameScreen = screens.CreateScreen(mainFont)
+	menuScreen = screens.CreateMenuScreen(fontObj)
 }
 
 type Game struct{}
 
 func (g *Game) Update() error {
-	return gameScreen.Update()
+	return menuScreen.Update()
+	//return gameScreen.Update()
 }
 
 func (g *Game) Draw(screen *ebiten.Image) {
-	gameScreen.Draw(screen)
+	menuScreen.Draw(screen)
+	//gameScreen.Draw(screen)
 }
 
 func (g *Game) Layout(outsideWidth, outsideHeight int) (int, int) {
