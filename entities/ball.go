@@ -35,7 +35,7 @@ func CreateBall() *Ball {
 
 func randDx() float64 {
 	direction := rand.Intn(2)
-	dx := 3 + rand.Intn(3)
+	dx := 5 + rand.Intn(1)
 
 	if direction == 1 {
 		return float64(-dx)
@@ -68,17 +68,17 @@ func (p *Ball) Draw(screen *ebiten.Image) {
 	leftOpts.GeoM.Translate(float64(p.rect.Min.X), float64(p.rect.Min.Y))
 	screen.DrawImage(p.image, leftOpts)
 
-	rightImage := ebiten.NewImage(100, 100)
-	rightImage.Fill(color.RGBA{R: 255})
-	rightImageOpts := &ebiten.DrawImageOptions{}
-	rightImageOpts.GeoM.Translate(float64(consts.GameZoneRight), float64(consts.GateTop))
-	screen.DrawImage(rightImage, rightImageOpts)
-
-	leftImage := ebiten.NewImage(100, 100)
-	leftImage.Fill(color.RGBA{R: 255})
-	leftImageOpts := &ebiten.DrawImageOptions{}
-	leftImageOpts.GeoM.Translate(float64(consts.GameZoneLeft), float64(consts.GateTop))
-	screen.DrawImage(leftImage, leftImageOpts)
+	//rightImage := ebiten.NewImage(100, consts.GateHeight)
+	//rightImage.Fill(color.RGBA{255, 0, 0, 255})
+	//rightImageOpts := &ebiten.DrawImageOptions{}
+	//rightImageOpts.GeoM.Translate(float64(consts.GameZoneRight), float64(consts.GateTop))
+	//screen.DrawImage(rightImage, rightImageOpts)
+	//
+	//leftImage := ebiten.NewImage(100, consts.GateHeight)
+	//leftImage.Fill(color.RGBA{255, 0, 0, 255})
+	//leftImageOpts := &ebiten.DrawImageOptions{}
+	//leftImageOpts.GeoM.Translate(float64(consts.GameZoneLeft), float64(consts.GateTop))
+	//screen.DrawImage(leftImage, leftImageOpts)
 }
 
 func (p *Ball) Update() {

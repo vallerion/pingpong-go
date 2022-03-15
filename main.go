@@ -1,7 +1,9 @@
 package main
 
 import (
+	"fmt"
 	"github.com/hajimehoshi/ebiten/v2"
+	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
 	"github.com/vallerion/pingpong-go/consts"
 	"github.com/vallerion/pingpong-go/entities"
 	"github.com/vallerion/pingpong-go/screens"
@@ -53,6 +55,9 @@ func (g *Game) Update() error {
 }
 
 func (g *Game) Draw(screen *ebiten.Image) {
+	msg := fmt.Sprintf("TPS: %0.2f FPS: %0.2f", ebiten.CurrentTPS(), ebiten.CurrentFPS())
+	ebitenutil.DebugPrint(screen, msg)
+
 	g.screens[g.currentScreen].Draw(screen)
 }
 

@@ -50,15 +50,15 @@ func (s *GameScreen) Update() error {
 		return nil
 	}
 
-	go func() {
-		if rand.Intn(1000) == 50 {
-			s.addBall()
-		}
-	}()
-
 	if ebiten.IsKeyPressed(ebiten.KeySpace) {
 		s.pause = !s.pause
 	}
+
+	go func() {
+		if rand.Intn(3000) == 50 {
+			s.addBall()
+		}
+	}()
 	if ebiten.IsKeyPressed(ebiten.KeyW) {
 		s.leftPlayer.MoveUp()
 	}

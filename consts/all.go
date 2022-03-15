@@ -15,9 +15,7 @@ const (
 	BallMaxSpeed             = 30
 	BallSize                 = 15
 	GateHeight               = 120
-	SideBorderHeight         = (ScreenHeight-GameZoneTop-GameFieldGap*2)/2 - GateHeight/2
-	GateTop                  = ScreenHeight/2 - GateHeight/2 + GameZoneTop
-	GateBottom               = ScreenHeight/2 + GateHeight/2 + GameZoneTop
-	ButtonPadding            = 20
-	TextSize                 = 32
+	SideBorderHeight         = (GameZoneBottom - GameZoneTop - GateHeight) / 2
+	GateTop                  = GameZoneTop + (GameZoneBottom-GameZoneTop-GateHeight)/2
+	GateBottom               = GameZoneBottom - (GameZoneBottom-GameZoneTop-GateHeight)/2
 )
