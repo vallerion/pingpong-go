@@ -67,6 +67,18 @@ func (p *Ball) Draw(screen *ebiten.Image) {
 	leftOpts := &ebiten.DrawImageOptions{}
 	leftOpts.GeoM.Translate(float64(p.rect.Min.X), float64(p.rect.Min.Y))
 	screen.DrawImage(p.image, leftOpts)
+
+	rightImage := ebiten.NewImage(100, 100)
+	rightImage.Fill(color.RGBA{R: 255})
+	rightImageOpts := &ebiten.DrawImageOptions{}
+	rightImageOpts.GeoM.Translate(float64(consts.GameZoneRight), float64(consts.GateTop))
+	screen.DrawImage(rightImage, rightImageOpts)
+
+	leftImage := ebiten.NewImage(100, 100)
+	leftImage.Fill(color.RGBA{R: 255})
+	leftImageOpts := &ebiten.DrawImageOptions{}
+	leftImageOpts.GeoM.Translate(float64(consts.GameZoneLeft), float64(consts.GateTop))
+	screen.DrawImage(leftImage, leftImageOpts)
 }
 
 func (p *Ball) Update() {
