@@ -85,7 +85,7 @@ func (b *Button) Update() error {
 	pt := image.Pt(ebiten.CursorPosition())
 	if pt.In(*b.rect) {
 		b.color = color.White
-		ebiten.SetCursorShape(ebiten.CursorShapePointer)
+		//ebiten.SetCursorShape(ebiten.CursorShapePointer)
 
 		if ebiten.IsMouseButtonPressed(ebiten.MouseButtonLeft) {
 			b.mouseDown = true
@@ -98,7 +98,7 @@ func (b *Button) Update() error {
 	} else {
 		b.mouseDown = false
 		b.color = color.RGBA{R: 189, G: 195, B: 199, A: 255}
-		ebiten.SetCursorShape(ebiten.CursorShapeDefault)
+		//ebiten.SetCursorShape(ebiten.CursorShapeDefault)
 	}
 
 	return nil

@@ -11,45 +11,49 @@ import (
 )
 
 var (
-	//gameScreen *screens.GameScreen
-	menuScreen *screens.Menu
-	fontObj    *opentype.Font
+	fontObj *opentype.Font
+)
+
+const (
+	screenMenu = iota
+	screenGameOffline
 )
 
 func init() {
 	fontObj, _ = opentype.Parse(goregular.TTF)
-
-	//gameScreen = screens.CreateScreen(mainFont)
-	//menuScreen = screens.CreateMenuScreen(fontObj)
 }
 
 func createGame() *Game {
 	m := screens.CreateMenuScreen(fontObj)
 
-	g := &Game{m}
+	scr := make(map[int]entities.Entity, 2)
+	scr[screenMenu] = m
+	scr[screenGameOffline] = screens.CreateGameScreen(fontObj)
+
+	g := &Game{screenMenu, scr}
 
 	m.OnStartOffline(func() {
-		g.currentScreen = screens.CreateGameScreen(fontObj)
+		g.currentScreen = screenGameOffline
 	})
 
 	return g
 }
 
 type Game struct {
-	currentScreen entities.Entity
+	currentScreen int
+	screens       map[int]entities.Entity
 }
 
 func (g *Game) Update() error {
-	_, isGame := g.currentScreen.(*screens.GameScreen)
-	if ebiten.IsKeyPressed(ebiten.KeyEscape) && isGame {
-		g.currentScreen = screens.CreateMenuScreen(fontObj)
+	if ebiten.IsKeyPressed(ebiten.KeyEscape) && g.currentScreen == screenGameOffline {
+		g.currentScreen = screenMenu
 	}
 
-	return g.currentScreen.Update()
+	return g.screens[g.currentScreen].Update()
 }
 
 func (g *Game) Draw(screen *ebiten.Image) {
-	g.currentScreen.Draw(screen)
+	g.screens[g.currentScreen].Draw(screen)
 }
 
 func (g *Game) Layout(outsideWidth, outsideHeight int) (int, int) {
@@ -58,7 +62,7 @@ func (g *Game) Layout(outsideWidth, outsideHeight int) (int, int) {
 
 func main() {
 	ebiten.SetWindowSize(consts.ScreenWidth, consts.ScreenHeight)
-	ebiten.SetWindowTitle("Hello, World!")
+	ebiten.SetWindowTitle("Ping Pong Online")
 
 	if err := ebiten.RunGame(createGame()); err != nil {
 		log.Fatal(err)
