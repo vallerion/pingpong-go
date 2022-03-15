@@ -14,9 +14,11 @@ type Menu struct {
 }
 
 func CreateMenuScreen(font *opentype.Font) *Menu {
+	x := float64(consts.ScreenWidth)*0.3 - 100
+
 	offline := entities.CreateButton(
 		"Offline game",
-		consts.ScreenWidth/2-100,
+		int(x),
 		consts.ScreenHeight/4,
 		200,
 		75,
@@ -26,7 +28,7 @@ func CreateMenuScreen(font *opentype.Font) *Menu {
 
 	online := entities.CreateButton(
 		"Multiplayer",
-		consts.ScreenWidth/2-100,
+		int(x),
 		consts.ScreenHeight/4+100,
 		200,
 		75,
@@ -36,7 +38,7 @@ func CreateMenuScreen(font *opentype.Font) *Menu {
 
 	exit := entities.CreateButton(
 		"Exit",
-		consts.ScreenWidth/2-100,
+		int(x),
 		consts.ScreenHeight/4+200,
 		200,
 		75,

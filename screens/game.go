@@ -13,17 +13,17 @@ import (
 )
 
 type GameScreen struct {
-	leftPlayer  *entities.Player
-	rightPlayer *entities.Player
-	balls       []*entities.Ball
-	border      *entities.Border
-	font        font.Face
-	pause       bool
+	leftPlayer             *entities.Player
+	rightPlayer            *entities.Player
+	balls                  []*entities.Ball
+	border                 *entities.Border
+	font                   font.Face
+	pause, keySpacePressed bool
 }
 
 func CreateGameScreen(fontType *opentype.Font) *GameScreen {
 	faceFont, _ := opentype.NewFace(fontType, &opentype.FaceOptions{
-		Size:    24,
+		Size:    26,
 		DPI:     72,
 		Hinting: font.HintingNone,
 	})
@@ -34,6 +34,7 @@ func CreateGameScreen(fontType *opentype.Font) *GameScreen {
 		make([]*entities.Ball, 0),
 		entities.CreateBorder(),
 		faceFont,
+		false,
 		false,
 	}
 
@@ -46,12 +47,16 @@ func (s *GameScreen) addBall() {
 }
 
 func (s *GameScreen) Update() error {
-	if s.pause {
-		return nil
+	if ebiten.IsKeyPressed(ebiten.KeySpace) {
+		s.keySpacePressed = true
+		//s.pause = !s.pause
+	} else if s.keySpacePressed {
+		s.pause = !s.pause
+		s.keySpacePressed = false
 	}
 
-	if ebiten.IsKeyPressed(ebiten.KeySpace) {
-		s.pause = !s.pause
+	if s.pause {
+		return nil
 	}
 
 	go func() {
@@ -129,7 +134,7 @@ func (s *GameScreen) Update() error {
 
 func (s *GameScreen) Draw(image *ebiten.Image) {
 	scoreText := fmt.Sprintf("%d:%d", s.leftPlayer.Score, s.rightPlayer.Score)
-	text.Draw(image, scoreText, s.font, consts.GameZoneHorizontalCenter-20, 40, color.White)
+	text.Draw(image, scoreText, s.font, consts.GameZoneHorizontalCenter-20, 35, color.White)
 
 	s.border.Draw(image)
 	s.leftPlayer.Draw(image)
@@ -137,4 +142,16 @@ func (s *GameScreen) Draw(image *ebiten.Image) {
 	for _, ball := range s.balls {
 		ball.Draw(image)
 	}
+
+	if s.pause {
+		s.drawPause(image)
+	}
+}
+
+func (s *GameScreen) drawPause(image *ebiten.Image) {
+	t := "Pause"
+	bounds, _ := font.BoundString(s.font, t)
+	w := (bounds.Max.X - bounds.Min.X).Ceil()
+
+	text.Draw(image, t, s.font, consts.GameZoneHorizontalCenter-w/2, consts.GameZoneVerticalCenter, color.White)
 }
