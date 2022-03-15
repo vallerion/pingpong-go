@@ -7,6 +7,7 @@ import (
 	"github.com/vallerion/pingpong-go/consts"
 	"github.com/vallerion/pingpong-go/entities"
 	"golang.org/x/image/font"
+	"golang.org/x/image/font/opentype"
 	"image/color"
 	"math/rand"
 )
@@ -20,13 +21,19 @@ type GameScreen struct {
 	pause       bool
 }
 
-func CreateGameScreen(font font.Face) *GameScreen {
+func CreateGameScreen(fontType *opentype.Font) *GameScreen {
+	faceFont, _ := opentype.NewFace(fontType, &opentype.FaceOptions{
+		Size:    24,
+		DPI:     72,
+		Hinting: font.HintingNone,
+	})
+
 	image := &GameScreen{
 		entities.CreatePlayer(consts.GameZoneLeft+50, consts.GameZoneVerticalCenter-consts.PlayerHeight/2),
 		entities.CreatePlayer(consts.GameZoneRight-(50+consts.PlayerWidth), consts.GameZoneVerticalCenter-consts.PlayerHeight/2),
 		make([]*entities.Ball, 0),
 		entities.CreateBorder(),
-		font,
+		faceFont,
 		false,
 	}
 

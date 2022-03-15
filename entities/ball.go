@@ -35,7 +35,7 @@ func CreateBall() *Ball {
 
 func randDx() float64 {
 	direction := rand.Intn(2)
-	dx := 2 + rand.Intn(3)
+	dx := 3 + rand.Intn(3)
 
 	if direction == 1 {
 		return float64(-dx)
@@ -102,7 +102,7 @@ func (p *Ball) Repel(rect *image.Rectangle) {
 
 	if horizontalCollision {
 		if math.Abs(p.dx) < consts.BallMaxSpeed {
-			p.dx = -(p.dx * 1.2)
+			p.dx = -(p.dx * 1.15)
 		} else {
 			p.dx = -p.dx
 		}

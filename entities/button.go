@@ -17,6 +17,8 @@ type Button struct {
 	contentImage                          *ImageAndOptions
 	font                                  font.Face
 	rect                                  *image.Rectangle
+	mouseDown                             bool
+	clickHandler                          func()
 }
 
 func CreateButton(text string, x, y, width, height, borderSize int, fontType *opentype.Font) *Button {
@@ -60,7 +62,7 @@ func CreateButton(text string, x, y, width, height, borderSize int, fontType *op
 
 	rect := image.Rect(x, y, x+width, y+height)
 
-	b, _, _ := faceFont.GlyphBounds('M')
+	b, _, _ := faceFont.GlyphBounds('O')
 	fontHeight := (b.Max.Y - b.Min.Y).Ceil()
 
 	return &Button{
@@ -74,6 +76,8 @@ func CreateButton(text string, x, y, width, height, borderSize int, fontType *op
 		&ImageAndOptions{contentImage, contentImageOpts},
 		faceFont,
 		&rect,
+		false,
+		func() {},
 	}
 }
 
@@ -82,7 +86,17 @@ func (b *Button) Update() error {
 	if pt.In(*b.rect) {
 		b.color = color.White
 		ebiten.SetCursorShape(ebiten.CursorShapePointer)
+
+		if ebiten.IsMouseButtonPressed(ebiten.MouseButtonLeft) {
+			b.mouseDown = true
+		} else {
+			if b.mouseDown {
+				b.clickHandler()
+			}
+			b.mouseDown = false
+		}
 	} else {
+		b.mouseDown = false
 		b.color = color.RGBA{R: 189, G: 195, B: 199, A: 255}
 		ebiten.SetCursorShape(ebiten.CursorShapeDefault)
 	}
@@ -106,7 +120,11 @@ func (b *Button) Draw(image *ebiten.Image) {
 		b.text,
 		b.font,
 		b.width/2-w/2,
-		b.height/2-b.fontHeight/2,
+		b.height/2,
 		b.color,
 	)
+}
+
+func (b *Button) OnClick(clickHandler func()) {
+	b.clickHandler = clickHandler
 }
