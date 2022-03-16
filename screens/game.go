@@ -35,8 +35,8 @@ func CreateGameScreen(fontType *opentype.Font, audioContext *audio.Context) *Gam
 	})
 
 	gameAudio, _ := mp3.DecodeWithSampleRate(consts.SampleRate, resources.Resources.Get("game"))
-	s := audio.NewInfiniteLoopWithIntro(gameAudio, consts.SampleRate, consts.SampleRate)
-	themeAudioPlayer, _ := audioContext.NewPlayer(s)
+	//s := audio.NewInfiniteLoopWithIntro(gameAudio, consts.SampleRate, consts.SampleRate)
+	themeAudioPlayer, _ := audioContext.NewPlayer(gameAudio)
 	themeAudioPlayer.SetVolume(0.25)
 
 	goalAudio, _ := wav.DecodeWithSampleRate(consts.SampleRate, resources.Resources.Get("goal"))

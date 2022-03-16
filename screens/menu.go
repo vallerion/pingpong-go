@@ -4,10 +4,13 @@ import (
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/audio"
 	"github.com/hajimehoshi/ebiten/v2/audio/mp3"
+	"github.com/hajimehoshi/ebiten/v2/text"
 	"github.com/vallerion/pingpong-go/consts"
 	"github.com/vallerion/pingpong-go/entities"
 	"github.com/vallerion/pingpong-go/resources"
+	"golang.org/x/image/font"
 	"golang.org/x/image/font/opentype"
+	"image/color"
 )
 
 type Menu struct {
@@ -15,9 +18,10 @@ type Menu struct {
 	onStartOfflineBtn *entities.Button
 	onExitBtn         *entities.Button
 	audioPlayer       *audio.Player
+	fontFace          font.Face
 }
 
-func CreateMenuScreen(font *opentype.Font, audioContext *audio.Context) *Menu {
+func CreateMenuScreen(fontType *opentype.Font, audioContext *audio.Context) *Menu {
 	x := float64(consts.ScreenWidth)*0.3 - 100
 
 	offline := entities.CreateButton(
@@ -27,7 +31,7 @@ func CreateMenuScreen(font *opentype.Font, audioContext *audio.Context) *Menu {
 		200,
 		75,
 		5,
-		font,
+		fontType,
 	)
 
 	online := entities.CreateButton(
@@ -37,7 +41,7 @@ func CreateMenuScreen(font *opentype.Font, audioContext *audio.Context) *Menu {
 		200,
 		75,
 		5,
-		font,
+		fontType,
 	)
 
 	exit := entities.CreateButton(
@@ -47,20 +51,26 @@ func CreateMenuScreen(font *opentype.Font, audioContext *audio.Context) *Menu {
 		200,
 		75,
 		5,
-		font,
+		fontType,
 	)
 
 	d, _ := mp3.DecodeWithSampleRate(consts.SampleRate, resources.Resources.Get("menu"))
-	s := audio.NewInfiniteLoopWithIntro(d, consts.SampleRate, consts.SampleRate)
-	audioPlayer, _ := audioContext.NewPlayer(s)
+	//s := audio.NewInfiniteLoopWithIntro(d, consts.SampleRate, consts.SampleRate)
+	audioPlayer, _ := audioContext.NewPlayer(d)
 
-	return &Menu{online, offline, exit, audioPlayer}
+	fontFace, _ := opentype.NewFace(fontType, &opentype.FaceOptions{
+		Size:    28,
+		DPI:     72,
+		Hinting: font.HintingNone,
+	})
+
+	return &Menu{online, offline, exit, audioPlayer, fontFace}
 }
 
 func (m *Menu) Update() error {
 	m.onStartOnlineBtn.Update()
 	m.onStartOfflineBtn.Update()
-	m.onExitBtn.Update()
+	//m.onExitBtn.Update()
 
 	return nil
 }
@@ -68,7 +78,19 @@ func (m *Menu) Update() error {
 func (m *Menu) Draw(image *ebiten.Image) {
 	m.onStartOnlineBtn.Draw(image)
 	m.onStartOfflineBtn.Draw(image)
-	m.onExitBtn.Draw(image)
+	//m.onExitBtn.Draw(image)
+
+	m.drawControlInfo(image)
+}
+
+func (m *Menu) drawControlInfo(image *ebiten.Image) {
+	x := float64(consts.ScreenWidth) * 0.5
+
+	controlText := "How to play:\n" +
+		"W,A,S,D to move left player\n" +
+		"Arrows to move right player\n" +
+		"Space to pause"
+	text.Draw(image, controlText, m.fontFace, int(x), consts.ScreenHeight/4+20, color.White)
 }
 
 func (m *Menu) Start() {
