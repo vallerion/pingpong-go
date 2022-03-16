@@ -1,9 +1,13 @@
 package screens
 
 import (
+	"fmt"
 	"github.com/hajimehoshi/ebiten/v2"
+	"github.com/hajimehoshi/ebiten/v2/audio"
+	"github.com/hajimehoshi/ebiten/v2/audio/mp3"
 	"github.com/vallerion/pingpong-go/consts"
 	"github.com/vallerion/pingpong-go/entities"
+	"github.com/vallerion/pingpong-go/resources"
 	"golang.org/x/image/font/opentype"
 )
 
@@ -11,10 +15,13 @@ type Menu struct {
 	onStartOnlineBtn  *entities.Button
 	onStartOfflineBtn *entities.Button
 	onExitBtn         *entities.Button
+	audioPlayer       *audio.Player
 }
 
-func CreateMenuScreen(font *opentype.Font) *Menu {
+func CreateMenuScreen(font *opentype.Font, audioContext *audio.Context) *Menu {
 	x := float64(consts.ScreenWidth)*0.3 - 100
+
+	fmt.Println(resources.Resources)
 
 	offline := entities.CreateButton(
 		"Offline game",
@@ -46,7 +53,10 @@ func CreateMenuScreen(font *opentype.Font) *Menu {
 		font,
 	)
 
-	return &Menu{online, offline, exit}
+	d, _ := mp3.DecodeWithSampleRate(consts.SampleRate, resources.Resources.Get("menu"))
+	audioPlayer, _ := audioContext.NewPlayer(d)
+
+	return &Menu{online, offline, exit, audioPlayer}
 }
 
 func (m *Menu) Update() error {
@@ -61,6 +71,15 @@ func (m *Menu) Draw(image *ebiten.Image) {
 	m.onStartOnlineBtn.Draw(image)
 	m.onStartOfflineBtn.Draw(image)
 	m.onExitBtn.Draw(image)
+}
+
+func (m *Menu) Start() {
+	m.audioPlayer.Rewind()
+	m.audioPlayer.Play()
+}
+
+func (m *Menu) End() {
+	m.audioPlayer.Close()
 }
 
 func (m *Menu) OnStartOnline(handler func()) {

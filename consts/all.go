@@ -18,4 +18,5 @@ const (
 	SideBorderHeight         = (GameZoneBottom - GameZoneTop - GateHeight) / 2
 	GateTop                  = GameZoneTop + (GameZoneBottom-GameZoneTop-GateHeight)/2
 	GateBottom               = GameZoneBottom - (GameZoneBottom-GameZoneTop-GateHeight)/2
+	SampleRate               = 48000
 )

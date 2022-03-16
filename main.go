@@ -3,9 +3,9 @@ package main
 import (
 	"fmt"
 	"github.com/hajimehoshi/ebiten/v2"
+	"github.com/hajimehoshi/ebiten/v2/audio"
 	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
 	"github.com/vallerion/pingpong-go/consts"
-	"github.com/vallerion/pingpong-go/entities"
 	"github.com/vallerion/pingpong-go/screens"
 	"golang.org/x/image/font/gofont/goregular"
 	"golang.org/x/image/font/opentype"
@@ -13,7 +13,8 @@ import (
 )
 
 var (
-	fontObj *opentype.Font
+	fontObj      *opentype.Font
+	audioContext *audio.Context
 )
 
 const (
@@ -23,32 +24,38 @@ const (
 
 func init() {
 	fontObj, _ = opentype.Parse(goregular.TTF)
+	audioContext = audio.NewContext(consts.SampleRate)
 }
 
 func createGame() *Game {
-	m := screens.CreateMenuScreen(fontObj)
+	m := screens.CreateMenuScreen(fontObj, audioContext)
 
-	scr := make(map[int]entities.Entity, 2)
+	scr := make(map[int]screens.Screen, 2)
 	scr[screenMenu] = m
-	scr[screenGameOffline] = screens.CreateGameScreen(fontObj)
+	scr[screenGameOffline] = screens.CreateGameScreen(fontObj, audioContext)
 
 	g := &Game{screenMenu, scr}
 
 	m.OnStartOffline(func() {
+		g.screens[g.currentScreen].End()
 		g.currentScreen = screenGameOffline
+		g.screens[g.currentScreen].Start()
 	})
+	m.Start()
 
 	return g
 }
 
 type Game struct {
 	currentScreen int
-	screens       map[int]entities.Entity
+	screens       map[int]screens.Screen
 }
 
 func (g *Game) Update() error {
 	if ebiten.IsKeyPressed(ebiten.KeyEscape) && g.currentScreen == screenGameOffline {
+		g.screens[g.currentScreen].End()
 		g.currentScreen = screenMenu
+		g.screens[g.currentScreen].Start()
 	}
 
 	return g.screens[g.currentScreen].Update()

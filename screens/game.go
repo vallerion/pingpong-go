@@ -3,9 +3,12 @@ package screens
 import (
 	"fmt"
 	"github.com/hajimehoshi/ebiten/v2"
+	"github.com/hajimehoshi/ebiten/v2/audio"
+	"github.com/hajimehoshi/ebiten/v2/audio/mp3"
 	"github.com/hajimehoshi/ebiten/v2/text"
 	"github.com/vallerion/pingpong-go/consts"
 	"github.com/vallerion/pingpong-go/entities"
+	"github.com/vallerion/pingpong-go/resources"
 	"golang.org/x/image/font"
 	"golang.org/x/image/font/opentype"
 	"image/color"
@@ -18,32 +21,46 @@ type GameScreen struct {
 	balls                  []*entities.Ball
 	border                 *entities.Border
 	font                   font.Face
+	audioPlayer            *audio.Player
 	pause, keySpacePressed bool
 }
 
-func CreateGameScreen(fontType *opentype.Font) *GameScreen {
+func CreateGameScreen(fontType *opentype.Font, audioContext *audio.Context) *GameScreen {
 	faceFont, _ := opentype.NewFace(fontType, &opentype.FaceOptions{
 		Size:    26,
 		DPI:     72,
 		Hinting: font.HintingNone,
 	})
 
-	image := &GameScreen{
+	d, _ := mp3.DecodeWithSampleRate(consts.SampleRate, resources.Resources.Get("game"))
+	audioPlayer, _ := audioContext.NewPlayer(d)
+
+	gs := &GameScreen{
 		entities.CreatePlayer(consts.GameZoneLeft+50, consts.GameZoneVerticalCenter-consts.PlayerHeight/2),
 		entities.CreatePlayer(consts.GameZoneRight-(50+consts.PlayerWidth), consts.GameZoneVerticalCenter-consts.PlayerHeight/2),
 		make([]*entities.Ball, 0),
 		entities.CreateBorder(),
 		faceFont,
+		audioPlayer,
 		false,
 		false,
 	}
+	gs.addBall()
 
-	image.addBall()
-	return image
+	return gs
 }
 
 func (s *GameScreen) addBall() {
 	s.balls = append(s.balls, entities.CreateBall())
+}
+
+func (s *GameScreen) Start() {
+	s.audioPlayer.Rewind()
+	s.audioPlayer.Play()
+}
+
+func (s *GameScreen) End() {
+	s.audioPlayer.Close()
 }
 
 func (s *GameScreen) Update() error {
