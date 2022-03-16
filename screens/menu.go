@@ -55,8 +55,8 @@ func CreateMenuScreen(fontType *opentype.Font, audioContext *audio.Context) *Men
 	)
 
 	d, _ := mp3.DecodeWithSampleRate(consts.SampleRate, resources.Resources.Get("menu"))
-	//s := audio.NewInfiniteLoopWithIntro(d, consts.SampleRate, consts.SampleRate)
-	audioPlayer, _ := audioContext.NewPlayer(d)
+	s := audio.NewInfiniteLoopWithIntro(d, consts.SampleRate*200, consts.SampleRate*200)
+	audioPlayer, _ := audioContext.NewPlayer(s)
 
 	fontFace, _ := opentype.NewFace(fontType, &opentype.FaceOptions{
 		Size:    28,

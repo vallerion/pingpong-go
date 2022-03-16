@@ -35,9 +35,9 @@ func CreateGameScreen(fontType *opentype.Font, audioContext *audio.Context) *Gam
 	})
 
 	gameAudio, _ := mp3.DecodeWithSampleRate(consts.SampleRate, resources.Resources.Get("game"))
-	//s := audio.NewInfiniteLoopWithIntro(gameAudio, consts.SampleRate, consts.SampleRate)
-	themeAudioPlayer, _ := audioContext.NewPlayer(gameAudio)
-	themeAudioPlayer.SetVolume(0.25)
+	s := audio.NewInfiniteLoopWithIntro(gameAudio, consts.SampleRate*170, consts.SampleRate*170)
+	themeAudioPlayer, _ := audioContext.NewPlayer(s)
+	themeAudioPlayer.SetVolume(0.4)
 
 	goalAudio, _ := wav.DecodeWithSampleRate(consts.SampleRate, resources.Resources.Get("goal"))
 	goalAudioPlayer, _ := audioContext.NewPlayer(goalAudio)
@@ -45,7 +45,7 @@ func CreateGameScreen(fontType *opentype.Font, audioContext *audio.Context) *Gam
 
 	collisionAudio, _ := wav.DecodeWithSampleRate(consts.SampleRate, resources.Resources.Get("collision"))
 	collisionAudioPlayer, _ := audioContext.NewPlayer(collisionAudio)
-	collisionAudioPlayer.SetVolume(1)
+	collisionAudioPlayer.SetVolume(0.75)
 
 	gs := &GameScreen{
 		entities.CreatePlayer(consts.GameZoneLeft+50, consts.GameZoneVerticalCenter-consts.PlayerHeight/2),
@@ -128,7 +128,7 @@ func (s *GameScreen) Update() error {
 			timer := time.NewTimer(time.Second)
 			go func() {
 				<-timer.C
-				s.themeAudioPlayer.SetVolume(0.25)
+				s.themeAudioPlayer.SetVolume(0.4)
 			}()
 		}
 
@@ -146,7 +146,7 @@ func (s *GameScreen) Update() error {
 			timer := time.NewTimer(6 * time.Second)
 			go func() {
 				<-timer.C
-				s.themeAudioPlayer.SetVolume(0.25)
+				s.themeAudioPlayer.SetVolume(0.4)
 			}()
 		}
 
