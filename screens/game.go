@@ -5,6 +5,7 @@ import (
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/audio"
 	"github.com/hajimehoshi/ebiten/v2/audio/mp3"
+	"github.com/hajimehoshi/ebiten/v2/audio/wav"
 	"github.com/hajimehoshi/ebiten/v2/text"
 	"github.com/vallerion/pingpong-go/consts"
 	"github.com/vallerion/pingpong-go/entities"
@@ -13,16 +14,17 @@ import (
 	"golang.org/x/image/font/opentype"
 	"image/color"
 	"math/rand"
+	"time"
 )
 
 type GameScreen struct {
-	leftPlayer             *entities.Player
-	rightPlayer            *entities.Player
-	balls                  []*entities.Ball
-	border                 *entities.Border
-	font                   font.Face
-	audioPlayer            *audio.Player
-	pause, keySpacePressed bool
+	leftPlayer                                              *entities.Player
+	rightPlayer                                             *entities.Player
+	balls                                                   []*entities.Ball
+	border                                                  *entities.Border
+	font                                                    font.Face
+	themeAudioPlayer, goalAudioPlayer, collisionAudioPlayer *audio.Player
+	pause, keySpacePressed                                  bool
 }
 
 func CreateGameScreen(fontType *opentype.Font, audioContext *audio.Context) *GameScreen {
@@ -32,8 +34,18 @@ func CreateGameScreen(fontType *opentype.Font, audioContext *audio.Context) *Gam
 		Hinting: font.HintingNone,
 	})
 
-	d, _ := mp3.DecodeWithSampleRate(consts.SampleRate, resources.Resources.Get("game"))
-	audioPlayer, _ := audioContext.NewPlayer(d)
+	gameAudio, _ := mp3.DecodeWithSampleRate(consts.SampleRate, resources.Resources.Get("game"))
+	s := audio.NewInfiniteLoopWithIntro(gameAudio, consts.SampleRate, consts.SampleRate)
+	themeAudioPlayer, _ := audioContext.NewPlayer(s)
+	themeAudioPlayer.SetVolume(0.25)
+
+	goalAudio, _ := wav.DecodeWithSampleRate(consts.SampleRate, resources.Resources.Get("goal"))
+	goalAudioPlayer, _ := audioContext.NewPlayer(goalAudio)
+	goalAudioPlayer.SetVolume(1)
+
+	collisionAudio, _ := wav.DecodeWithSampleRate(consts.SampleRate, resources.Resources.Get("collision"))
+	collisionAudioPlayer, _ := audioContext.NewPlayer(collisionAudio)
+	collisionAudioPlayer.SetVolume(1)
 
 	gs := &GameScreen{
 		entities.CreatePlayer(consts.GameZoneLeft+50, consts.GameZoneVerticalCenter-consts.PlayerHeight/2),
@@ -41,7 +53,9 @@ func CreateGameScreen(fontType *opentype.Font, audioContext *audio.Context) *Gam
 		make([]*entities.Ball, 0),
 		entities.CreateBorder(),
 		faceFont,
-		audioPlayer,
+		themeAudioPlayer,
+		goalAudioPlayer,
+		collisionAudioPlayer,
 		false,
 		false,
 	}
@@ -55,12 +69,12 @@ func (s *GameScreen) addBall() {
 }
 
 func (s *GameScreen) Start() {
-	s.audioPlayer.Rewind()
-	s.audioPlayer.Play()
+	s.themeAudioPlayer.Rewind()
+	s.themeAudioPlayer.Play()
 }
 
 func (s *GameScreen) End() {
-	s.audioPlayer.Close()
+	s.themeAudioPlayer.Close()
 }
 
 func (s *GameScreen) Update() error {
@@ -107,6 +121,15 @@ func (s *GameScreen) Update() error {
 			if len(s.balls) > 1 {
 				ball.IsDisplay = false
 			}
+
+			s.goalAudioPlayer.Rewind()
+			s.goalAudioPlayer.Play()
+			s.themeAudioPlayer.SetVolume(0.1)
+			timer := time.NewTimer(time.Second)
+			go func() {
+				<-timer.C
+				s.themeAudioPlayer.SetVolume(0.25)
+			}()
 		}
 
 		if ball.RightGoal() {
@@ -116,16 +139,29 @@ func (s *GameScreen) Update() error {
 			if len(s.balls) > 1 {
 				ball.IsDisplay = false
 			}
+
+			s.goalAudioPlayer.Rewind()
+			s.goalAudioPlayer.Play()
+			s.themeAudioPlayer.SetVolume(0.1)
+			timer := time.NewTimer(6 * time.Second)
+			go func() {
+				<-timer.C
+				s.themeAudioPlayer.SetVolume(0.25)
+			}()
 		}
 
 		ball.Update()
 
 		if s.leftPlayer.GetRect().Overlaps(*ball.GetRect()) {
 			ball.Repel(s.leftPlayer.GetRect())
+			s.collisionAudioPlayer.Rewind()
+			s.collisionAudioPlayer.Play()
 		}
 
 		if s.rightPlayer.GetRect().Overlaps(*ball.GetRect()) {
 			ball.Repel(s.rightPlayer.GetRect())
+			s.collisionAudioPlayer.Rewind()
+			s.collisionAudioPlayer.Play()
 		}
 
 		for _, subBall := range s.balls {

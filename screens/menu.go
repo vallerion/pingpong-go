@@ -1,7 +1,6 @@
 package screens
 
 import (
-	"fmt"
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/audio"
 	"github.com/hajimehoshi/ebiten/v2/audio/mp3"
@@ -20,8 +19,6 @@ type Menu struct {
 
 func CreateMenuScreen(font *opentype.Font, audioContext *audio.Context) *Menu {
 	x := float64(consts.ScreenWidth)*0.3 - 100
-
-	fmt.Println(resources.Resources)
 
 	offline := entities.CreateButton(
 		"Offline game",
@@ -54,7 +51,8 @@ func CreateMenuScreen(font *opentype.Font, audioContext *audio.Context) *Menu {
 	)
 
 	d, _ := mp3.DecodeWithSampleRate(consts.SampleRate, resources.Resources.Get("menu"))
-	audioPlayer, _ := audioContext.NewPlayer(d)
+	s := audio.NewInfiniteLoopWithIntro(d, consts.SampleRate, consts.SampleRate)
+	audioPlayer, _ := audioContext.NewPlayer(s)
 
 	return &Menu{online, offline, exit, audioPlayer}
 }
