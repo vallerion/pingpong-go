@@ -1,7 +1,7 @@
 package screens
 
 import (
-	"github.com/hajimehoshi/ebiten/v2"
+	"github.com/hajimehoshi/ebiten"
 )
 
 type Screen interface {

@@ -1,8 +1,8 @@
 package entities
 
 import (
-	"github.com/hajimehoshi/ebiten/v2"
-	"github.com/vallerion/pingpong-go/consts"
+	"github.com/hajimehoshi/ebiten"
+	"github.com/vallerion/pingpong-go/client/consts"
 	"image"
 	"image/color"
 	"math"

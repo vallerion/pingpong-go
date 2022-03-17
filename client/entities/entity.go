@@ -1,6 +1,6 @@
 package entities
 
-import "github.com/hajimehoshi/ebiten/v2"
+import "github.com/hajimehoshi/ebiten"
 
 type Entity interface {
 	Update() error

@@ -1,13 +1,13 @@
 package screens
 
 import (
-	"github.com/hajimehoshi/ebiten/v2"
+	"github.com/hajimehoshi/ebiten"
 	"github.com/hajimehoshi/ebiten/v2/audio"
 	"github.com/hajimehoshi/ebiten/v2/audio/mp3"
 	"github.com/hajimehoshi/ebiten/v2/text"
-	"github.com/vallerion/pingpong-go/consts"
-	"github.com/vallerion/pingpong-go/entities"
-	"github.com/vallerion/pingpong-go/resources"
+	"github.com/vallerion/pingpong-go/client/consts"
+	"github.com/vallerion/pingpong-go/client/entities"
+	"github.com/vallerion/pingpong-go/client/resources"
 	"golang.org/x/image/font"
 	"golang.org/x/image/font/opentype"
 	"image/color"

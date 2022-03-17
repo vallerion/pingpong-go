@@ -1,12 +1,10 @@
 # pingpong-go
 PIngPong game based on ebiten, written in go.
-![Game Process](/assets/game_process.gif)
+![Game Process](/client/assets/game_process.gif)
 
 ## Todo
 
 - [ ] add background picture
-- [ ] add background sound
-- [ ] add collision sound
 - [ ] handle exit
 - [ ] server for multiplayer
 
