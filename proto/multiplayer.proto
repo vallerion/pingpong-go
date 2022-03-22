@@ -1,0 +1,35 @@
+syntax = "proto3";
+option go_package = "/proto";
+
+service Multiplayer {
+  rpc GameProcess (stream Request) returns (stream Response);
+}
+
+message Player {
+  string id = 1;
+  int64 x = 2;
+  int64 y = 3;
+}
+
+message NewPlayerAction {
+  string id = 1;
+}
+
+message MoveAction {
+  Player leftPlayer = 1;
+  Player rightPlayer = 2;
+}
+
+message Request {
+  oneof action {
+    NewPlayerAction newPlayer = 1;
+    MoveAction moveAction = 2;
+  }
+}
+
+message Response {
+  oneof action {
+    NewPlayerAction newPlayer = 1;
+    MoveAction moveAction = 2;
+  }
+}
