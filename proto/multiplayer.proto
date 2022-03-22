@@ -1,4 +1,5 @@
 syntax = "proto3";
+import "google/protobuf/timestamp.proto";
 option go_package = "/proto";
 
 service Multiplayer {
@@ -11,25 +12,40 @@ message Player {
   int64 y = 3;
 }
 
-message NewPlayerAction {
+message NewPlayer {
   string id = 1;
 }
 
-message MoveAction {
-  Player leftPlayer = 1;
-  Player rightPlayer = 2;
+message Move {
+  string playerId = 1;
+  int64 x = 2;
+  int64 y = 3;
+}
+
+message Ping {
+  google.protobuf.Timestamp startTime = 1;
 }
 
 message Request {
   oneof action {
-    NewPlayerAction newPlayer = 1;
-    MoveAction moveAction = 2;
+    NewPlayer newPlayer = 1;
+    Move moveAction = 2;
+    Ping ping = 3;
   }
+}
+
+message Pong {
+  google.protobuf.Timestamp startTime = 1;
+}
+
+message Players {
+  Player leftPlayer = 1;
+  Player rightPlayer = 2;
 }
 
 message Response {
   oneof action {
-    NewPlayerAction newPlayer = 1;
-    MoveAction moveAction = 2;
+    Pong pong = 1;
+    Players players = 2;
   }
 }

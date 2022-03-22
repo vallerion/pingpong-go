@@ -9,6 +9,7 @@ package proto
 import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
+	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
 	reflect "reflect"
 	sync "sync"
 )
@@ -83,7 +84,7 @@ func (x *Player) GetY() int64 {
 	return 0
 }
 
-type NewPlayerAction struct {
+type NewPlayer struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
@@ -91,8 +92,8 @@ type NewPlayerAction struct {
 	Id string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 }
 
-func (x *NewPlayerAction) Reset() {
-	*x = NewPlayerAction{}
+func (x *NewPlayer) Reset() {
+	*x = NewPlayer{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_proto_multiplayer_proto_msgTypes[1]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -100,13 +101,13 @@ func (x *NewPlayerAction) Reset() {
 	}
 }
 
-func (x *NewPlayerAction) String() string {
+func (x *NewPlayer) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*NewPlayerAction) ProtoMessage() {}
+func (*NewPlayer) ProtoMessage() {}
 
-func (x *NewPlayerAction) ProtoReflect() protoreflect.Message {
+func (x *NewPlayer) ProtoReflect() protoreflect.Message {
 	mi := &file_proto_multiplayer_proto_msgTypes[1]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -118,29 +119,30 @@ func (x *NewPlayerAction) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use NewPlayerAction.ProtoReflect.Descriptor instead.
-func (*NewPlayerAction) Descriptor() ([]byte, []int) {
+// Deprecated: Use NewPlayer.ProtoReflect.Descriptor instead.
+func (*NewPlayer) Descriptor() ([]byte, []int) {
 	return file_proto_multiplayer_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *NewPlayerAction) GetId() string {
+func (x *NewPlayer) GetId() string {
 	if x != nil {
 		return x.Id
 	}
 	return ""
 }
 
-type MoveAction struct {
+type Move struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	LeftPlayer  *Player `protobuf:"bytes,1,opt,name=leftPlayer,proto3" json:"leftPlayer,omitempty"`
-	RightPlayer *Player `protobuf:"bytes,2,opt,name=rightPlayer,proto3" json:"rightPlayer,omitempty"`
+	PlayerId string `protobuf:"bytes,1,opt,name=playerId,proto3" json:"playerId,omitempty"`
+	X        int64  `protobuf:"varint,2,opt,name=x,proto3" json:"x,omitempty"`
+	Y        int64  `protobuf:"varint,3,opt,name=y,proto3" json:"y,omitempty"`
 }
 
-func (x *MoveAction) Reset() {
-	*x = MoveAction{}
+func (x *Move) Reset() {
+	*x = Move{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_proto_multiplayer_proto_msgTypes[2]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -148,13 +150,13 @@ func (x *MoveAction) Reset() {
 	}
 }
 
-func (x *MoveAction) String() string {
+func (x *Move) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*MoveAction) ProtoMessage() {}
+func (*Move) ProtoMessage() {}
 
-func (x *MoveAction) ProtoReflect() protoreflect.Message {
+func (x *Move) ProtoReflect() protoreflect.Message {
 	mi := &file_proto_multiplayer_proto_msgTypes[2]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -166,21 +168,75 @@ func (x *MoveAction) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use MoveAction.ProtoReflect.Descriptor instead.
-func (*MoveAction) Descriptor() ([]byte, []int) {
+// Deprecated: Use Move.ProtoReflect.Descriptor instead.
+func (*Move) Descriptor() ([]byte, []int) {
 	return file_proto_multiplayer_proto_rawDescGZIP(), []int{2}
 }
 
-func (x *MoveAction) GetLeftPlayer() *Player {
+func (x *Move) GetPlayerId() string {
 	if x != nil {
-		return x.LeftPlayer
+		return x.PlayerId
 	}
-	return nil
+	return ""
 }
 
-func (x *MoveAction) GetRightPlayer() *Player {
+func (x *Move) GetX() int64 {
 	if x != nil {
-		return x.RightPlayer
+		return x.X
+	}
+	return 0
+}
+
+func (x *Move) GetY() int64 {
+	if x != nil {
+		return x.Y
+	}
+	return 0
+}
+
+type Ping struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	StartTime *timestamppb.Timestamp `protobuf:"bytes,1,opt,name=startTime,proto3" json:"startTime,omitempty"`
+}
+
+func (x *Ping) Reset() {
+	*x = Ping{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_proto_multiplayer_proto_msgTypes[3]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *Ping) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Ping) ProtoMessage() {}
+
+func (x *Ping) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_multiplayer_proto_msgTypes[3]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Ping.ProtoReflect.Descriptor instead.
+func (*Ping) Descriptor() ([]byte, []int) {
+	return file_proto_multiplayer_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *Ping) GetStartTime() *timestamppb.Timestamp {
+	if x != nil {
+		return x.StartTime
 	}
 	return nil
 }
@@ -193,13 +249,14 @@ type Request struct {
 	// Types that are assignable to Action:
 	//	*Request_NewPlayer
 	//	*Request_MoveAction
+	//	*Request_Ping
 	Action isRequest_Action `protobuf_oneof:"action"`
 }
 
 func (x *Request) Reset() {
 	*x = Request{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_multiplayer_proto_msgTypes[3]
+		mi := &file_proto_multiplayer_proto_msgTypes[4]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -212,7 +269,7 @@ func (x *Request) String() string {
 func (*Request) ProtoMessage() {}
 
 func (x *Request) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_multiplayer_proto_msgTypes[3]
+	mi := &file_proto_multiplayer_proto_msgTypes[4]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -225,7 +282,7 @@ func (x *Request) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Request.ProtoReflect.Descriptor instead.
 func (*Request) Descriptor() ([]byte, []int) {
-	return file_proto_multiplayer_proto_rawDescGZIP(), []int{3}
+	return file_proto_multiplayer_proto_rawDescGZIP(), []int{4}
 }
 
 func (m *Request) GetAction() isRequest_Action {
@@ -235,16 +292,23 @@ func (m *Request) GetAction() isRequest_Action {
 	return nil
 }
 
-func (x *Request) GetNewPlayer() *NewPlayerAction {
+func (x *Request) GetNewPlayer() *NewPlayer {
 	if x, ok := x.GetAction().(*Request_NewPlayer); ok {
 		return x.NewPlayer
 	}
 	return nil
 }
 
-func (x *Request) GetMoveAction() *MoveAction {
+func (x *Request) GetMoveAction() *Move {
 	if x, ok := x.GetAction().(*Request_MoveAction); ok {
 		return x.MoveAction
+	}
+	return nil
+}
+
+func (x *Request) GetPing() *Ping {
+	if x, ok := x.GetAction().(*Request_Ping); ok {
+		return x.Ping
 	}
 	return nil
 }
@@ -254,16 +318,124 @@ type isRequest_Action interface {
 }
 
 type Request_NewPlayer struct {
-	NewPlayer *NewPlayerAction `protobuf:"bytes,1,opt,name=newPlayer,proto3,oneof"`
+	NewPlayer *NewPlayer `protobuf:"bytes,1,opt,name=newPlayer,proto3,oneof"`
 }
 
 type Request_MoveAction struct {
-	MoveAction *MoveAction `protobuf:"bytes,2,opt,name=moveAction,proto3,oneof"`
+	MoveAction *Move `protobuf:"bytes,2,opt,name=moveAction,proto3,oneof"`
+}
+
+type Request_Ping struct {
+	Ping *Ping `protobuf:"bytes,3,opt,name=ping,proto3,oneof"`
 }
 
 func (*Request_NewPlayer) isRequest_Action() {}
 
 func (*Request_MoveAction) isRequest_Action() {}
+
+func (*Request_Ping) isRequest_Action() {}
+
+type Pong struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	StartTime *timestamppb.Timestamp `protobuf:"bytes,1,opt,name=startTime,proto3" json:"startTime,omitempty"`
+}
+
+func (x *Pong) Reset() {
+	*x = Pong{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_proto_multiplayer_proto_msgTypes[5]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *Pong) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Pong) ProtoMessage() {}
+
+func (x *Pong) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_multiplayer_proto_msgTypes[5]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Pong.ProtoReflect.Descriptor instead.
+func (*Pong) Descriptor() ([]byte, []int) {
+	return file_proto_multiplayer_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *Pong) GetStartTime() *timestamppb.Timestamp {
+	if x != nil {
+		return x.StartTime
+	}
+	return nil
+}
+
+type Players struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	LeftPlayer  *Player `protobuf:"bytes,1,opt,name=leftPlayer,proto3" json:"leftPlayer,omitempty"`
+	RightPlayer *Player `protobuf:"bytes,2,opt,name=rightPlayer,proto3" json:"rightPlayer,omitempty"`
+}
+
+func (x *Players) Reset() {
+	*x = Players{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_proto_multiplayer_proto_msgTypes[6]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *Players) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Players) ProtoMessage() {}
+
+func (x *Players) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_multiplayer_proto_msgTypes[6]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Players.ProtoReflect.Descriptor instead.
+func (*Players) Descriptor() ([]byte, []int) {
+	return file_proto_multiplayer_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *Players) GetLeftPlayer() *Player {
+	if x != nil {
+		return x.LeftPlayer
+	}
+	return nil
+}
+
+func (x *Players) GetRightPlayer() *Player {
+	if x != nil {
+		return x.RightPlayer
+	}
+	return nil
+}
 
 type Response struct {
 	state         protoimpl.MessageState
@@ -271,15 +443,15 @@ type Response struct {
 	unknownFields protoimpl.UnknownFields
 
 	// Types that are assignable to Action:
-	//	*Response_NewPlayer
-	//	*Response_MoveAction
+	//	*Response_Pong
+	//	*Response_Players
 	Action isResponse_Action `protobuf_oneof:"action"`
 }
 
 func (x *Response) Reset() {
 	*x = Response{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_multiplayer_proto_msgTypes[4]
+		mi := &file_proto_multiplayer_proto_msgTypes[7]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -292,7 +464,7 @@ func (x *Response) String() string {
 func (*Response) ProtoMessage() {}
 
 func (x *Response) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_multiplayer_proto_msgTypes[4]
+	mi := &file_proto_multiplayer_proto_msgTypes[7]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -305,7 +477,7 @@ func (x *Response) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Response.ProtoReflect.Descriptor instead.
 func (*Response) Descriptor() ([]byte, []int) {
-	return file_proto_multiplayer_proto_rawDescGZIP(), []int{4}
+	return file_proto_multiplayer_proto_rawDescGZIP(), []int{7}
 }
 
 func (m *Response) GetAction() isResponse_Action {
@@ -315,16 +487,16 @@ func (m *Response) GetAction() isResponse_Action {
 	return nil
 }
 
-func (x *Response) GetNewPlayer() *NewPlayerAction {
-	if x, ok := x.GetAction().(*Response_NewPlayer); ok {
-		return x.NewPlayer
+func (x *Response) GetPong() *Pong {
+	if x, ok := x.GetAction().(*Response_Pong); ok {
+		return x.Pong
 	}
 	return nil
 }
 
-func (x *Response) GetMoveAction() *MoveAction {
-	if x, ok := x.GetAction().(*Response_MoveAction); ok {
-		return x.MoveAction
+func (x *Response) GetPlayers() *Players {
+	if x, ok := x.GetAction().(*Response_Players); ok {
+		return x.Players
 	}
 	return nil
 }
@@ -333,49 +505,62 @@ type isResponse_Action interface {
 	isResponse_Action()
 }
 
-type Response_NewPlayer struct {
-	NewPlayer *NewPlayerAction `protobuf:"bytes,1,opt,name=newPlayer,proto3,oneof"`
+type Response_Pong struct {
+	Pong *Pong `protobuf:"bytes,1,opt,name=pong,proto3,oneof"`
 }
 
-type Response_MoveAction struct {
-	MoveAction *MoveAction `protobuf:"bytes,2,opt,name=moveAction,proto3,oneof"`
+type Response_Players struct {
+	Players *Players `protobuf:"bytes,2,opt,name=players,proto3,oneof"`
 }
 
-func (*Response_NewPlayer) isResponse_Action() {}
+func (*Response_Pong) isResponse_Action() {}
 
-func (*Response_MoveAction) isResponse_Action() {}
+func (*Response_Players) isResponse_Action() {}
 
 var File_proto_multiplayer_proto protoreflect.FileDescriptor
 
 var file_proto_multiplayer_proto_rawDesc = []byte{
 	0x0a, 0x17, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2f, 0x6d, 0x75, 0x6c, 0x74, 0x69, 0x70, 0x6c, 0x61,
-	0x79, 0x65, 0x72, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x22, 0x34, 0x0a, 0x06, 0x50, 0x6c, 0x61,
-	0x79, 0x65, 0x72, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52,
-	0x02, 0x69, 0x64, 0x12, 0x0c, 0x0a, 0x01, 0x78, 0x18, 0x02, 0x20, 0x01, 0x28, 0x03, 0x52, 0x01,
-	0x78, 0x12, 0x0c, 0x0a, 0x01, 0x79, 0x18, 0x03, 0x20, 0x01, 0x28, 0x03, 0x52, 0x01, 0x79, 0x22,
-	0x21, 0x0a, 0x0f, 0x4e, 0x65, 0x77, 0x50, 0x6c, 0x61, 0x79, 0x65, 0x72, 0x41, 0x63, 0x74, 0x69,
-	0x6f, 0x6e, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x02,
-	0x69, 0x64, 0x22, 0x60, 0x0a, 0x0a, 0x4d, 0x6f, 0x76, 0x65, 0x41, 0x63, 0x74, 0x69, 0x6f, 0x6e,
-	0x12, 0x27, 0x0a, 0x0a, 0x6c, 0x65, 0x66, 0x74, 0x50, 0x6c, 0x61, 0x79, 0x65, 0x72, 0x18, 0x01,
-	0x20, 0x01, 0x28, 0x0b, 0x32, 0x07, 0x2e, 0x50, 0x6c, 0x61, 0x79, 0x65, 0x72, 0x52, 0x0a, 0x6c,
-	0x65, 0x66, 0x74, 0x50, 0x6c, 0x61, 0x79, 0x65, 0x72, 0x12, 0x29, 0x0a, 0x0b, 0x72, 0x69, 0x67,
-	0x68, 0x74, 0x50, 0x6c, 0x61, 0x79, 0x65, 0x72, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x07,
-	0x2e, 0x50, 0x6c, 0x61, 0x79, 0x65, 0x72, 0x52, 0x0b, 0x72, 0x69, 0x67, 0x68, 0x74, 0x50, 0x6c,
-	0x61, 0x79, 0x65, 0x72, 0x22, 0x74, 0x0a, 0x07, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12,
-	0x30, 0x0a, 0x09, 0x6e, 0x65, 0x77, 0x50, 0x6c, 0x61, 0x79, 0x65, 0x72, 0x18, 0x01, 0x20, 0x01,
-	0x28, 0x0b, 0x32, 0x10, 0x2e, 0x4e, 0x65, 0x77, 0x50, 0x6c, 0x61, 0x79, 0x65, 0x72, 0x41, 0x63,
-	0x74, 0x69, 0x6f, 0x6e, 0x48, 0x00, 0x52, 0x09, 0x6e, 0x65, 0x77, 0x50, 0x6c, 0x61, 0x79, 0x65,
-	0x72, 0x12, 0x2d, 0x0a, 0x0a, 0x6d, 0x6f, 0x76, 0x65, 0x41, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x18,
-	0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x0b, 0x2e, 0x4d, 0x6f, 0x76, 0x65, 0x41, 0x63, 0x74, 0x69,
-	0x6f, 0x6e, 0x48, 0x00, 0x52, 0x0a, 0x6d, 0x6f, 0x76, 0x65, 0x41, 0x63, 0x74, 0x69, 0x6f, 0x6e,
-	0x42, 0x08, 0x0a, 0x06, 0x61, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x22, 0x75, 0x0a, 0x08, 0x52, 0x65,
-	0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x30, 0x0a, 0x09, 0x6e, 0x65, 0x77, 0x50, 0x6c, 0x61,
-	0x79, 0x65, 0x72, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x10, 0x2e, 0x4e, 0x65, 0x77, 0x50,
-	0x6c, 0x61, 0x79, 0x65, 0x72, 0x41, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x48, 0x00, 0x52, 0x09, 0x6e,
-	0x65, 0x77, 0x50, 0x6c, 0x61, 0x79, 0x65, 0x72, 0x12, 0x2d, 0x0a, 0x0a, 0x6d, 0x6f, 0x76, 0x65,
-	0x41, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x0b, 0x2e, 0x4d,
-	0x6f, 0x76, 0x65, 0x41, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x48, 0x00, 0x52, 0x0a, 0x6d, 0x6f, 0x76,
-	0x65, 0x41, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x42, 0x08, 0x0a, 0x06, 0x61, 0x63, 0x74, 0x69, 0x6f,
+	0x79, 0x65, 0x72, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x1f, 0x67, 0x6f, 0x6f, 0x67, 0x6c,
+	0x65, 0x2f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2f, 0x74, 0x69, 0x6d, 0x65, 0x73,
+	0x74, 0x61, 0x6d, 0x70, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x22, 0x34, 0x0a, 0x06, 0x50, 0x6c,
+	0x61, 0x79, 0x65, 0x72, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09,
+	0x52, 0x02, 0x69, 0x64, 0x12, 0x0c, 0x0a, 0x01, 0x78, 0x18, 0x02, 0x20, 0x01, 0x28, 0x03, 0x52,
+	0x01, 0x78, 0x12, 0x0c, 0x0a, 0x01, 0x79, 0x18, 0x03, 0x20, 0x01, 0x28, 0x03, 0x52, 0x01, 0x79,
+	0x22, 0x1b, 0x0a, 0x09, 0x4e, 0x65, 0x77, 0x50, 0x6c, 0x61, 0x79, 0x65, 0x72, 0x12, 0x0e, 0x0a,
+	0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x02, 0x69, 0x64, 0x22, 0x3e, 0x0a,
+	0x04, 0x4d, 0x6f, 0x76, 0x65, 0x12, 0x1a, 0x0a, 0x08, 0x70, 0x6c, 0x61, 0x79, 0x65, 0x72, 0x49,
+	0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x08, 0x70, 0x6c, 0x61, 0x79, 0x65, 0x72, 0x49,
+	0x64, 0x12, 0x0c, 0x0a, 0x01, 0x78, 0x18, 0x02, 0x20, 0x01, 0x28, 0x03, 0x52, 0x01, 0x78, 0x12,
+	0x0c, 0x0a, 0x01, 0x79, 0x18, 0x03, 0x20, 0x01, 0x28, 0x03, 0x52, 0x01, 0x79, 0x22, 0x40, 0x0a,
+	0x04, 0x50, 0x69, 0x6e, 0x67, 0x12, 0x38, 0x0a, 0x09, 0x73, 0x74, 0x61, 0x72, 0x74, 0x54, 0x69,
+	0x6d, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1a, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c,
+	0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2e, 0x54, 0x69, 0x6d, 0x65, 0x73,
+	0x74, 0x61, 0x6d, 0x70, 0x52, 0x09, 0x73, 0x74, 0x61, 0x72, 0x74, 0x54, 0x69, 0x6d, 0x65, 0x22,
+	0x85, 0x01, 0x0a, 0x07, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x2a, 0x0a, 0x09, 0x6e,
+	0x65, 0x77, 0x50, 0x6c, 0x61, 0x79, 0x65, 0x72, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x0a,
+	0x2e, 0x4e, 0x65, 0x77, 0x50, 0x6c, 0x61, 0x79, 0x65, 0x72, 0x48, 0x00, 0x52, 0x09, 0x6e, 0x65,
+	0x77, 0x50, 0x6c, 0x61, 0x79, 0x65, 0x72, 0x12, 0x27, 0x0a, 0x0a, 0x6d, 0x6f, 0x76, 0x65, 0x41,
+	0x63, 0x74, 0x69, 0x6f, 0x6e, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x05, 0x2e, 0x4d, 0x6f,
+	0x76, 0x65, 0x48, 0x00, 0x52, 0x0a, 0x6d, 0x6f, 0x76, 0x65, 0x41, 0x63, 0x74, 0x69, 0x6f, 0x6e,
+	0x12, 0x1b, 0x0a, 0x04, 0x70, 0x69, 0x6e, 0x67, 0x18, 0x03, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x05,
+	0x2e, 0x50, 0x69, 0x6e, 0x67, 0x48, 0x00, 0x52, 0x04, 0x70, 0x69, 0x6e, 0x67, 0x42, 0x08, 0x0a,
+	0x06, 0x61, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x22, 0x40, 0x0a, 0x04, 0x50, 0x6f, 0x6e, 0x67, 0x12,
+	0x38, 0x0a, 0x09, 0x73, 0x74, 0x61, 0x72, 0x74, 0x54, 0x69, 0x6d, 0x65, 0x18, 0x01, 0x20, 0x01,
+	0x28, 0x0b, 0x32, 0x1a, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74,
+	0x6f, 0x62, 0x75, 0x66, 0x2e, 0x54, 0x69, 0x6d, 0x65, 0x73, 0x74, 0x61, 0x6d, 0x70, 0x52, 0x09,
+	0x73, 0x74, 0x61, 0x72, 0x74, 0x54, 0x69, 0x6d, 0x65, 0x22, 0x5d, 0x0a, 0x07, 0x50, 0x6c, 0x61,
+	0x79, 0x65, 0x72, 0x73, 0x12, 0x27, 0x0a, 0x0a, 0x6c, 0x65, 0x66, 0x74, 0x50, 0x6c, 0x61, 0x79,
+	0x65, 0x72, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x07, 0x2e, 0x50, 0x6c, 0x61, 0x79, 0x65,
+	0x72, 0x52, 0x0a, 0x6c, 0x65, 0x66, 0x74, 0x50, 0x6c, 0x61, 0x79, 0x65, 0x72, 0x12, 0x29, 0x0a,
+	0x0b, 0x72, 0x69, 0x67, 0x68, 0x74, 0x50, 0x6c, 0x61, 0x79, 0x65, 0x72, 0x18, 0x02, 0x20, 0x01,
+	0x28, 0x0b, 0x32, 0x07, 0x2e, 0x50, 0x6c, 0x61, 0x79, 0x65, 0x72, 0x52, 0x0b, 0x72, 0x69, 0x67,
+	0x68, 0x74, 0x50, 0x6c, 0x61, 0x79, 0x65, 0x72, 0x22, 0x57, 0x0a, 0x08, 0x52, 0x65, 0x73, 0x70,
+	0x6f, 0x6e, 0x73, 0x65, 0x12, 0x1b, 0x0a, 0x04, 0x70, 0x6f, 0x6e, 0x67, 0x18, 0x01, 0x20, 0x01,
+	0x28, 0x0b, 0x32, 0x05, 0x2e, 0x50, 0x6f, 0x6e, 0x67, 0x48, 0x00, 0x52, 0x04, 0x70, 0x6f, 0x6e,
+	0x67, 0x12, 0x24, 0x0a, 0x07, 0x70, 0x6c, 0x61, 0x79, 0x65, 0x72, 0x73, 0x18, 0x02, 0x20, 0x01,
+	0x28, 0x0b, 0x32, 0x08, 0x2e, 0x50, 0x6c, 0x61, 0x79, 0x65, 0x72, 0x73, 0x48, 0x00, 0x52, 0x07,
+	0x70, 0x6c, 0x61, 0x79, 0x65, 0x72, 0x73, 0x42, 0x08, 0x0a, 0x06, 0x61, 0x63, 0x74, 0x69, 0x6f,
 	0x6e, 0x32, 0x35, 0x0a, 0x0b, 0x4d, 0x75, 0x6c, 0x74, 0x69, 0x70, 0x6c, 0x61, 0x79, 0x65, 0x72,
 	0x12, 0x26, 0x0a, 0x0b, 0x47, 0x61, 0x6d, 0x65, 0x50, 0x72, 0x6f, 0x63, 0x65, 0x73, 0x73, 0x12,
 	0x08, 0x2e, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x09, 0x2e, 0x52, 0x65, 0x73, 0x70,
@@ -395,28 +580,35 @@ func file_proto_multiplayer_proto_rawDescGZIP() []byte {
 	return file_proto_multiplayer_proto_rawDescData
 }
 
-var file_proto_multiplayer_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
+var file_proto_multiplayer_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
 var file_proto_multiplayer_proto_goTypes = []interface{}{
-	(*Player)(nil),          // 0: Player
-	(*NewPlayerAction)(nil), // 1: NewPlayerAction
-	(*MoveAction)(nil),      // 2: MoveAction
-	(*Request)(nil),         // 3: Request
-	(*Response)(nil),        // 4: Response
+	(*Player)(nil),                // 0: Player
+	(*NewPlayer)(nil),             // 1: NewPlayer
+	(*Move)(nil),                  // 2: Move
+	(*Ping)(nil),                  // 3: Ping
+	(*Request)(nil),               // 4: Request
+	(*Pong)(nil),                  // 5: Pong
+	(*Players)(nil),               // 6: Players
+	(*Response)(nil),              // 7: Response
+	(*timestamppb.Timestamp)(nil), // 8: google.protobuf.Timestamp
 }
 var file_proto_multiplayer_proto_depIdxs = []int32{
-	0, // 0: MoveAction.leftPlayer:type_name -> Player
-	0, // 1: MoveAction.rightPlayer:type_name -> Player
-	1, // 2: Request.newPlayer:type_name -> NewPlayerAction
-	2, // 3: Request.moveAction:type_name -> MoveAction
-	1, // 4: Response.newPlayer:type_name -> NewPlayerAction
-	2, // 5: Response.moveAction:type_name -> MoveAction
-	3, // 6: Multiplayer.GameProcess:input_type -> Request
-	4, // 7: Multiplayer.GameProcess:output_type -> Response
-	7, // [7:8] is the sub-list for method output_type
-	6, // [6:7] is the sub-list for method input_type
-	6, // [6:6] is the sub-list for extension type_name
-	6, // [6:6] is the sub-list for extension extendee
-	0, // [0:6] is the sub-list for field type_name
+	8,  // 0: Ping.startTime:type_name -> google.protobuf.Timestamp
+	1,  // 1: Request.newPlayer:type_name -> NewPlayer
+	2,  // 2: Request.moveAction:type_name -> Move
+	3,  // 3: Request.ping:type_name -> Ping
+	8,  // 4: Pong.startTime:type_name -> google.protobuf.Timestamp
+	0,  // 5: Players.leftPlayer:type_name -> Player
+	0,  // 6: Players.rightPlayer:type_name -> Player
+	5,  // 7: Response.pong:type_name -> Pong
+	6,  // 8: Response.players:type_name -> Players
+	4,  // 9: Multiplayer.GameProcess:input_type -> Request
+	7,  // 10: Multiplayer.GameProcess:output_type -> Response
+	10, // [10:11] is the sub-list for method output_type
+	9,  // [9:10] is the sub-list for method input_type
+	9,  // [9:9] is the sub-list for extension type_name
+	9,  // [9:9] is the sub-list for extension extendee
+	0,  // [0:9] is the sub-list for field type_name
 }
 
 func init() { file_proto_multiplayer_proto_init() }
@@ -438,7 +630,7 @@ func file_proto_multiplayer_proto_init() {
 			}
 		}
 		file_proto_multiplayer_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*NewPlayerAction); i {
+			switch v := v.(*NewPlayer); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -450,7 +642,7 @@ func file_proto_multiplayer_proto_init() {
 			}
 		}
 		file_proto_multiplayer_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*MoveAction); i {
+			switch v := v.(*Move); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -462,7 +654,7 @@ func file_proto_multiplayer_proto_init() {
 			}
 		}
 		file_proto_multiplayer_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*Request); i {
+			switch v := v.(*Ping); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -474,6 +666,42 @@ func file_proto_multiplayer_proto_init() {
 			}
 		}
 		file_proto_multiplayer_proto_msgTypes[4].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*Request); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_proto_multiplayer_proto_msgTypes[5].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*Pong); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_proto_multiplayer_proto_msgTypes[6].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*Players); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_proto_multiplayer_proto_msgTypes[7].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*Response); i {
 			case 0:
 				return &v.state
@@ -486,13 +714,14 @@ func file_proto_multiplayer_proto_init() {
 			}
 		}
 	}
-	file_proto_multiplayer_proto_msgTypes[3].OneofWrappers = []interface{}{
+	file_proto_multiplayer_proto_msgTypes[4].OneofWrappers = []interface{}{
 		(*Request_NewPlayer)(nil),
 		(*Request_MoveAction)(nil),
+		(*Request_Ping)(nil),
 	}
-	file_proto_multiplayer_proto_msgTypes[4].OneofWrappers = []interface{}{
-		(*Response_NewPlayer)(nil),
-		(*Response_MoveAction)(nil),
+	file_proto_multiplayer_proto_msgTypes[7].OneofWrappers = []interface{}{
+		(*Response_Pong)(nil),
+		(*Response_Players)(nil),
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
@@ -500,7 +729,7 @@ func file_proto_multiplayer_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_proto_multiplayer_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   5,
+			NumMessages:   8,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
