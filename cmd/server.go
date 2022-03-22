@@ -26,6 +26,7 @@ func (m *MultiplayerServer) GameProcess(stream proto.Multiplayer_GameProcessServ
 	for {
 		req, err := stream.Recv()
 		if err != nil {
+			//delete(m.clients, currentClientId)
 			return fmt.Errorf("failed to reveive: %v", err)
 		}
 		switch req.Action.(type) {
@@ -37,6 +38,9 @@ func (m *MultiplayerServer) GameProcess(stream proto.Multiplayer_GameProcessServ
 		case *proto.Request_NewPlayer:
 			if m.game.LeftPlayer != nil && m.game.RightPlayer != nil {
 				return errors.New("failed to connect new player")
+			}
+			if _, valid := uuid.Parse(req.GetNewPlayer().Id); valid != nil {
+				return fmt.Errorf("received invalid player id: %v", valid)
 			}
 
 			if m.game.LeftPlayer == nil {
@@ -85,7 +89,7 @@ func main() {
 	//game := &server.Game{Rooms: make(map[uuid.UUID]*server.Room, 0)}
 
 	s := grpc.NewServer()
-	ms := &MultiplayerServer{game: game, clients: make(map[uuid.UUID]*proto.Multiplayer_GameProcessServer)}
+	ms := &MultiplayerServer{game: game, clients: make(map[uuid.UUID]proto.Multiplayer_GameProcessServer)}
 	proto.RegisterMultiplayerServer(s, ms)
 
 	if err := s.Serve(lis); err != nil {

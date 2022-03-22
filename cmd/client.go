@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"github.com/vallerion/pingpong-go/proto"
 	"google.golang.org/grpc"
 	"google.golang.org/protobuf/types/known/timestamppb"
@@ -24,44 +25,52 @@ func main() {
 		log.Fatalf("failed to connect: %v", err)
 	}
 
-	ch := make(chan error)
+	errCh := make(chan error)
 
-	go func(stream proto.Multiplayer_GameProcessClient) {
+	go func(errCh <-chan error) {
 		for {
-			err := stream.Send(&proto.Request{Action: &proto.Request_NewPlayer{&proto.NewPlayer{Id: "123"}}})
+			select {
+			case err := <-errCh:
+				fmt.Println(err)
+			}
+		}
+	}(errCh)
+
+	go func(stream proto.Multiplayer_GameProcessClient, errCh chan<- error) {
+		for {
+			err := stream.Send(&proto.Request{Action: &proto.Request_NewPlayer{NewPlayer: &proto.Player{Id: "123"}}})
 			if err != nil {
-				log.Fatalf("failed to send message: %v", err)
+				errCh <- fmt.Errorf("failed to send message: %v", err)
 			}
 			time.Sleep(time.Second * 2)
 		}
-	}(stream)
+	}(stream, errCh)
 
-	go func(stream proto.Multiplayer_GameProcessClient) {
+	go func(stream proto.Multiplayer_GameProcessClient, errCh chan<- error) {
 		for {
 			err := stream.Send(&proto.Request{Action: &proto.Request_Ping{&proto.Ping{StartTime: timestamppb.Now()}}})
 			if err != nil {
-				log.Fatalf("failed to send message: %v", err)
+				errCh <- fmt.Errorf("failed to send message: %v", err)
 			}
 			time.Sleep(time.Second * 1)
 		}
-	}(stream)
+	}(stream, errCh)
 
-	go func(stream proto.Multiplayer_GameProcessClient) {
-		for {
-			res, err := stream.Recv()
-			if err != nil {
-				log.Fatalf("failed to receive response: %v", err)
-			}
-
-			switch res.Action.(type) {
-			case *proto.Response_Pong:
-				pingTime := time.Since(res.GetPong().StartTime.AsTime()).Milliseconds()
-				log.Printf("ping %d ms", pingTime)
-			case *proto.Response_Players:
-				log.Printf("received, leftPlayer.Id: %v, rightPlayer.Id: %v", res.GetPlayers().LeftPlayer.Id, res.GetPlayers().RightPlayer.Id)
-			}
+	//go func(stream proto.Multiplayer_GameProcessClient) {
+	for {
+		res, err := stream.Recv()
+		if err != nil {
+			errCh <- fmt.Errorf("failed to receive response: %v", err)
+			continue
 		}
-	}(stream)
 
-	<-ch
+		switch res.Action.(type) {
+		case *proto.Response_Pong:
+			pingTime := time.Since(res.GetPong().StartTime.AsTime()).Milliseconds()
+			log.Printf("ping %d ms", pingTime)
+		case *proto.Response_Players:
+			log.Printf("received, leftPlayer.Id: %v, rightPlayer.Id: %v", res.GetPlayers().LeftPlayer.Id, res.GetPlayers().RightPlayer.Id)
+		}
+	}
+	//}(stream)
 }
