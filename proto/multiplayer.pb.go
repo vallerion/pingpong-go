@@ -84,53 +84,6 @@ func (x *Player) GetY() int64 {
 	return 0
 }
 
-type NewPlayer struct {
-	state         protoimpl.MessageState
-	sizeCache     protoimpl.SizeCache
-	unknownFields protoimpl.UnknownFields
-
-	Id string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-}
-
-func (x *NewPlayer) Reset() {
-	*x = NewPlayer{}
-	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_multiplayer_proto_msgTypes[1]
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		ms.StoreMessageInfo(mi)
-	}
-}
-
-func (x *NewPlayer) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*NewPlayer) ProtoMessage() {}
-
-func (x *NewPlayer) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_multiplayer_proto_msgTypes[1]
-	if protoimpl.UnsafeEnabled && x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use NewPlayer.ProtoReflect.Descriptor instead.
-func (*NewPlayer) Descriptor() ([]byte, []int) {
-	return file_proto_multiplayer_proto_rawDescGZIP(), []int{1}
-}
-
-func (x *NewPlayer) GetId() string {
-	if x != nil {
-		return x.Id
-	}
-	return ""
-}
-
 type Move struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -144,7 +97,7 @@ type Move struct {
 func (x *Move) Reset() {
 	*x = Move{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_multiplayer_proto_msgTypes[2]
+		mi := &file_proto_multiplayer_proto_msgTypes[1]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -157,7 +110,7 @@ func (x *Move) String() string {
 func (*Move) ProtoMessage() {}
 
 func (x *Move) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_multiplayer_proto_msgTypes[2]
+	mi := &file_proto_multiplayer_proto_msgTypes[1]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -170,7 +123,7 @@ func (x *Move) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Move.ProtoReflect.Descriptor instead.
 func (*Move) Descriptor() ([]byte, []int) {
-	return file_proto_multiplayer_proto_rawDescGZIP(), []int{2}
+	return file_proto_multiplayer_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *Move) GetPlayerId() string {
@@ -205,7 +158,7 @@ type Ping struct {
 func (x *Ping) Reset() {
 	*x = Ping{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_multiplayer_proto_msgTypes[3]
+		mi := &file_proto_multiplayer_proto_msgTypes[2]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -218,7 +171,7 @@ func (x *Ping) String() string {
 func (*Ping) ProtoMessage() {}
 
 func (x *Ping) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_multiplayer_proto_msgTypes[3]
+	mi := &file_proto_multiplayer_proto_msgTypes[2]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -231,7 +184,7 @@ func (x *Ping) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Ping.ProtoReflect.Descriptor instead.
 func (*Ping) Descriptor() ([]byte, []int) {
-	return file_proto_multiplayer_proto_rawDescGZIP(), []int{3}
+	return file_proto_multiplayer_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *Ping) GetStartTime() *timestamppb.Timestamp {
@@ -256,7 +209,7 @@ type Request struct {
 func (x *Request) Reset() {
 	*x = Request{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_multiplayer_proto_msgTypes[4]
+		mi := &file_proto_multiplayer_proto_msgTypes[3]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -269,7 +222,7 @@ func (x *Request) String() string {
 func (*Request) ProtoMessage() {}
 
 func (x *Request) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_multiplayer_proto_msgTypes[4]
+	mi := &file_proto_multiplayer_proto_msgTypes[3]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -282,7 +235,7 @@ func (x *Request) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Request.ProtoReflect.Descriptor instead.
 func (*Request) Descriptor() ([]byte, []int) {
-	return file_proto_multiplayer_proto_rawDescGZIP(), []int{4}
+	return file_proto_multiplayer_proto_rawDescGZIP(), []int{3}
 }
 
 func (m *Request) GetAction() isRequest_Action {
@@ -292,7 +245,7 @@ func (m *Request) GetAction() isRequest_Action {
 	return nil
 }
 
-func (x *Request) GetNewPlayer() *NewPlayer {
+func (x *Request) GetNewPlayer() *Player {
 	if x, ok := x.GetAction().(*Request_NewPlayer); ok {
 		return x.NewPlayer
 	}
@@ -318,7 +271,7 @@ type isRequest_Action interface {
 }
 
 type Request_NewPlayer struct {
-	NewPlayer *NewPlayer `protobuf:"bytes,1,opt,name=newPlayer,proto3,oneof"`
+	NewPlayer *Player `protobuf:"bytes,1,opt,name=newPlayer,proto3,oneof"`
 }
 
 type Request_MoveAction struct {
@@ -346,7 +299,7 @@ type Pong struct {
 func (x *Pong) Reset() {
 	*x = Pong{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_multiplayer_proto_msgTypes[5]
+		mi := &file_proto_multiplayer_proto_msgTypes[4]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -359,7 +312,7 @@ func (x *Pong) String() string {
 func (*Pong) ProtoMessage() {}
 
 func (x *Pong) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_multiplayer_proto_msgTypes[5]
+	mi := &file_proto_multiplayer_proto_msgTypes[4]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -372,7 +325,7 @@ func (x *Pong) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Pong.ProtoReflect.Descriptor instead.
 func (*Pong) Descriptor() ([]byte, []int) {
-	return file_proto_multiplayer_proto_rawDescGZIP(), []int{5}
+	return file_proto_multiplayer_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *Pong) GetStartTime() *timestamppb.Timestamp {
@@ -394,7 +347,7 @@ type Players struct {
 func (x *Players) Reset() {
 	*x = Players{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_multiplayer_proto_msgTypes[6]
+		mi := &file_proto_multiplayer_proto_msgTypes[5]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -407,7 +360,7 @@ func (x *Players) String() string {
 func (*Players) ProtoMessage() {}
 
 func (x *Players) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_multiplayer_proto_msgTypes[6]
+	mi := &file_proto_multiplayer_proto_msgTypes[5]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -420,7 +373,7 @@ func (x *Players) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Players.ProtoReflect.Descriptor instead.
 func (*Players) Descriptor() ([]byte, []int) {
-	return file_proto_multiplayer_proto_rawDescGZIP(), []int{6}
+	return file_proto_multiplayer_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *Players) GetLeftPlayer() *Player {
@@ -451,7 +404,7 @@ type Response struct {
 func (x *Response) Reset() {
 	*x = Response{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_proto_multiplayer_proto_msgTypes[7]
+		mi := &file_proto_multiplayer_proto_msgTypes[6]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -464,7 +417,7 @@ func (x *Response) String() string {
 func (*Response) ProtoMessage() {}
 
 func (x *Response) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_multiplayer_proto_msgTypes[7]
+	mi := &file_proto_multiplayer_proto_msgTypes[6]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -477,7 +430,7 @@ func (x *Response) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Response.ProtoReflect.Descriptor instead.
 func (*Response) Descriptor() ([]byte, []int) {
-	return file_proto_multiplayer_proto_rawDescGZIP(), []int{7}
+	return file_proto_multiplayer_proto_rawDescGZIP(), []int{6}
 }
 
 func (m *Response) GetAction() isResponse_Action {
@@ -527,19 +480,17 @@ var file_proto_multiplayer_proto_rawDesc = []byte{
 	0x61, 0x79, 0x65, 0x72, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09,
 	0x52, 0x02, 0x69, 0x64, 0x12, 0x0c, 0x0a, 0x01, 0x78, 0x18, 0x02, 0x20, 0x01, 0x28, 0x03, 0x52,
 	0x01, 0x78, 0x12, 0x0c, 0x0a, 0x01, 0x79, 0x18, 0x03, 0x20, 0x01, 0x28, 0x03, 0x52, 0x01, 0x79,
-	0x22, 0x1b, 0x0a, 0x09, 0x4e, 0x65, 0x77, 0x50, 0x6c, 0x61, 0x79, 0x65, 0x72, 0x12, 0x0e, 0x0a,
-	0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x02, 0x69, 0x64, 0x22, 0x3e, 0x0a,
-	0x04, 0x4d, 0x6f, 0x76, 0x65, 0x12, 0x1a, 0x0a, 0x08, 0x70, 0x6c, 0x61, 0x79, 0x65, 0x72, 0x49,
-	0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x08, 0x70, 0x6c, 0x61, 0x79, 0x65, 0x72, 0x49,
-	0x64, 0x12, 0x0c, 0x0a, 0x01, 0x78, 0x18, 0x02, 0x20, 0x01, 0x28, 0x03, 0x52, 0x01, 0x78, 0x12,
-	0x0c, 0x0a, 0x01, 0x79, 0x18, 0x03, 0x20, 0x01, 0x28, 0x03, 0x52, 0x01, 0x79, 0x22, 0x40, 0x0a,
-	0x04, 0x50, 0x69, 0x6e, 0x67, 0x12, 0x38, 0x0a, 0x09, 0x73, 0x74, 0x61, 0x72, 0x74, 0x54, 0x69,
-	0x6d, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1a, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c,
-	0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2e, 0x54, 0x69, 0x6d, 0x65, 0x73,
-	0x74, 0x61, 0x6d, 0x70, 0x52, 0x09, 0x73, 0x74, 0x61, 0x72, 0x74, 0x54, 0x69, 0x6d, 0x65, 0x22,
-	0x85, 0x01, 0x0a, 0x07, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x2a, 0x0a, 0x09, 0x6e,
-	0x65, 0x77, 0x50, 0x6c, 0x61, 0x79, 0x65, 0x72, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x0a,
-	0x2e, 0x4e, 0x65, 0x77, 0x50, 0x6c, 0x61, 0x79, 0x65, 0x72, 0x48, 0x00, 0x52, 0x09, 0x6e, 0x65,
+	0x22, 0x3e, 0x0a, 0x04, 0x4d, 0x6f, 0x76, 0x65, 0x12, 0x1a, 0x0a, 0x08, 0x70, 0x6c, 0x61, 0x79,
+	0x65, 0x72, 0x49, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x08, 0x70, 0x6c, 0x61, 0x79,
+	0x65, 0x72, 0x49, 0x64, 0x12, 0x0c, 0x0a, 0x01, 0x78, 0x18, 0x02, 0x20, 0x01, 0x28, 0x03, 0x52,
+	0x01, 0x78, 0x12, 0x0c, 0x0a, 0x01, 0x79, 0x18, 0x03, 0x20, 0x01, 0x28, 0x03, 0x52, 0x01, 0x79,
+	0x22, 0x40, 0x0a, 0x04, 0x50, 0x69, 0x6e, 0x67, 0x12, 0x38, 0x0a, 0x09, 0x73, 0x74, 0x61, 0x72,
+	0x74, 0x54, 0x69, 0x6d, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1a, 0x2e, 0x67, 0x6f,
+	0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2e, 0x54, 0x69,
+	0x6d, 0x65, 0x73, 0x74, 0x61, 0x6d, 0x70, 0x52, 0x09, 0x73, 0x74, 0x61, 0x72, 0x74, 0x54, 0x69,
+	0x6d, 0x65, 0x22, 0x82, 0x01, 0x0a, 0x07, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x27,
+	0x0a, 0x09, 0x6e, 0x65, 0x77, 0x50, 0x6c, 0x61, 0x79, 0x65, 0x72, 0x18, 0x01, 0x20, 0x01, 0x28,
+	0x0b, 0x32, 0x07, 0x2e, 0x50, 0x6c, 0x61, 0x79, 0x65, 0x72, 0x48, 0x00, 0x52, 0x09, 0x6e, 0x65,
 	0x77, 0x50, 0x6c, 0x61, 0x79, 0x65, 0x72, 0x12, 0x27, 0x0a, 0x0a, 0x6d, 0x6f, 0x76, 0x65, 0x41,
 	0x63, 0x74, 0x69, 0x6f, 0x6e, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x05, 0x2e, 0x4d, 0x6f,
 	0x76, 0x65, 0x48, 0x00, 0x52, 0x0a, 0x6d, 0x6f, 0x76, 0x65, 0x41, 0x63, 0x74, 0x69, 0x6f, 0x6e,
@@ -580,30 +531,29 @@ func file_proto_multiplayer_proto_rawDescGZIP() []byte {
 	return file_proto_multiplayer_proto_rawDescData
 }
 
-var file_proto_multiplayer_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
+var file_proto_multiplayer_proto_msgTypes = make([]protoimpl.MessageInfo, 7)
 var file_proto_multiplayer_proto_goTypes = []interface{}{
 	(*Player)(nil),                // 0: Player
-	(*NewPlayer)(nil),             // 1: NewPlayer
-	(*Move)(nil),                  // 2: Move
-	(*Ping)(nil),                  // 3: Ping
-	(*Request)(nil),               // 4: Request
-	(*Pong)(nil),                  // 5: Pong
-	(*Players)(nil),               // 6: Players
-	(*Response)(nil),              // 7: Response
-	(*timestamppb.Timestamp)(nil), // 8: google.protobuf.Timestamp
+	(*Move)(nil),                  // 1: Move
+	(*Ping)(nil),                  // 2: Ping
+	(*Request)(nil),               // 3: Request
+	(*Pong)(nil),                  // 4: Pong
+	(*Players)(nil),               // 5: Players
+	(*Response)(nil),              // 6: Response
+	(*timestamppb.Timestamp)(nil), // 7: google.protobuf.Timestamp
 }
 var file_proto_multiplayer_proto_depIdxs = []int32{
-	8,  // 0: Ping.startTime:type_name -> google.protobuf.Timestamp
-	1,  // 1: Request.newPlayer:type_name -> NewPlayer
-	2,  // 2: Request.moveAction:type_name -> Move
-	3,  // 3: Request.ping:type_name -> Ping
-	8,  // 4: Pong.startTime:type_name -> google.protobuf.Timestamp
+	7,  // 0: Ping.startTime:type_name -> google.protobuf.Timestamp
+	0,  // 1: Request.newPlayer:type_name -> Player
+	1,  // 2: Request.moveAction:type_name -> Move
+	2,  // 3: Request.ping:type_name -> Ping
+	7,  // 4: Pong.startTime:type_name -> google.protobuf.Timestamp
 	0,  // 5: Players.leftPlayer:type_name -> Player
 	0,  // 6: Players.rightPlayer:type_name -> Player
-	5,  // 7: Response.pong:type_name -> Pong
-	6,  // 8: Response.players:type_name -> Players
-	4,  // 9: Multiplayer.GameProcess:input_type -> Request
-	7,  // 10: Multiplayer.GameProcess:output_type -> Response
+	4,  // 7: Response.pong:type_name -> Pong
+	5,  // 8: Response.players:type_name -> Players
+	3,  // 9: Multiplayer.GameProcess:input_type -> Request
+	6,  // 10: Multiplayer.GameProcess:output_type -> Response
 	10, // [10:11] is the sub-list for method output_type
 	9,  // [9:10] is the sub-list for method input_type
 	9,  // [9:9] is the sub-list for extension type_name
@@ -630,18 +580,6 @@ func file_proto_multiplayer_proto_init() {
 			}
 		}
 		file_proto_multiplayer_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*NewPlayer); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
-		}
-		file_proto_multiplayer_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*Move); i {
 			case 0:
 				return &v.state
@@ -653,7 +591,7 @@ func file_proto_multiplayer_proto_init() {
 				return nil
 			}
 		}
-		file_proto_multiplayer_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
+		file_proto_multiplayer_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*Ping); i {
 			case 0:
 				return &v.state
@@ -665,7 +603,7 @@ func file_proto_multiplayer_proto_init() {
 				return nil
 			}
 		}
-		file_proto_multiplayer_proto_msgTypes[4].Exporter = func(v interface{}, i int) interface{} {
+		file_proto_multiplayer_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*Request); i {
 			case 0:
 				return &v.state
@@ -677,7 +615,7 @@ func file_proto_multiplayer_proto_init() {
 				return nil
 			}
 		}
-		file_proto_multiplayer_proto_msgTypes[5].Exporter = func(v interface{}, i int) interface{} {
+		file_proto_multiplayer_proto_msgTypes[4].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*Pong); i {
 			case 0:
 				return &v.state
@@ -689,7 +627,7 @@ func file_proto_multiplayer_proto_init() {
 				return nil
 			}
 		}
-		file_proto_multiplayer_proto_msgTypes[6].Exporter = func(v interface{}, i int) interface{} {
+		file_proto_multiplayer_proto_msgTypes[5].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*Players); i {
 			case 0:
 				return &v.state
@@ -701,7 +639,7 @@ func file_proto_multiplayer_proto_init() {
 				return nil
 			}
 		}
-		file_proto_multiplayer_proto_msgTypes[7].Exporter = func(v interface{}, i int) interface{} {
+		file_proto_multiplayer_proto_msgTypes[6].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*Response); i {
 			case 0:
 				return &v.state
@@ -714,12 +652,12 @@ func file_proto_multiplayer_proto_init() {
 			}
 		}
 	}
-	file_proto_multiplayer_proto_msgTypes[4].OneofWrappers = []interface{}{
+	file_proto_multiplayer_proto_msgTypes[3].OneofWrappers = []interface{}{
 		(*Request_NewPlayer)(nil),
 		(*Request_MoveAction)(nil),
 		(*Request_Ping)(nil),
 	}
-	file_proto_multiplayer_proto_msgTypes[7].OneofWrappers = []interface{}{
+	file_proto_multiplayer_proto_msgTypes[6].OneofWrappers = []interface{}{
 		(*Response_Pong)(nil),
 		(*Response_Players)(nil),
 	}
@@ -729,7 +667,7 @@ func file_proto_multiplayer_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_proto_multiplayer_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   8,
+			NumMessages:   7,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

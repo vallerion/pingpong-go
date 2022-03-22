@@ -11,7 +11,9 @@ const (
 )
 
 type Game struct {
-	Rooms map[uuid.UUID]*Room
+	//Rooms map[uuid.UUID]*Room
+	Status                  roomStatus
+	LeftPlayer, RightPlayer *Player
 }
 
 type Room struct {
@@ -21,5 +23,5 @@ type Room struct {
 
 type Player struct {
 	Id   uuid.UUID
-	X, Y int
+	X, Y int64
 }

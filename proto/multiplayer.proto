@@ -12,10 +12,6 @@ message Player {
   int64 y = 3;
 }
 
-message NewPlayer {
-  string id = 1;
-}
-
 message Move {
   string playerId = 1;
   int64 x = 2;
@@ -28,7 +24,7 @@ message Ping {
 
 message Request {
   oneof action {
-    NewPlayer newPlayer = 1;
+    Player newPlayer = 1;
     Move moveAction = 2;
     Ping ping = 3;
   }
